@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@page import="model.User" %>
+<%@page import="model.User, model.Book, model.BookDao"%>
 <!doctype html>
 
 <html lang="en">
 <head>
 <meta charset="utf-8">
 
-<title>Sheet μ | Home</title>
+<title>Sheet μ | Cart</title>
 
 <link rel="stylesheet" href="../css/style.css">
 <meta id="wixMobileViewport" name="viewport"
@@ -20,28 +20,21 @@
 	<header>
 		<h6>Sheet μ</h6>
 		<html>
+
 <body>
 
-	
+
 
 	<div class="topnav">
-		<a href="index.jsp">Home</a> <a href="shop.html">Shop</a> <a
+		<a href="index.html">Home</a> <a href="shop.html">Shop</a>
+		
+		<a class="active" href="cart.jsp">Cart</a> <a
 			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
-		<%!User u = new User();%>
-		<%!String style = "style=\"display:none\"";%>
-		<%
-			u = (User) session.getAttribute("User");
-			if (u != null && u.getFirstName() != null) {
-				style = "";
-			}
-		%>
-		<a <%=style%> href="cart.jsp">Cart</a>
+
 		<div class="search-container">
 			<form action="search.jsp">
-
-				<a href="../HTML/create.html">Create Account</a><a class="active"
-					href="login.jsp">Login</a> <input type="text"
-					placeholder="Search.." name="search">
+				<a href="../HTML/create.html">Create Account</a><a href="login.jsp">Login</a>
+				<input type="text" placeholder="Search.." name="search">
 				<button type="submit">
 					<i class="fa fa-search"></i>
 				</button>
@@ -49,14 +42,24 @@
 		</div>
 	</div>
 
-
-
+	<br>
 	<div style="padding-left: 16px">
-		<h2>Welcome to Sheet μ</h2>
-		<h3>The Sheet Music Store for the Modern Age</h3>
-		<p>All of our sheet music is provided by your favorite artists,
-			including independent artists.</p>
-		<p>Browse around and see if you find something you like!</p>
+		<dl>
+			<input type="checkbox" value="Item 1">Item 1
+		</dl>
+		<dt>Item description here</dt>
+		<br>
+		<br>
+		<dl>
+			<input type="checkbox" value="Item 2">Item 2
+		</dl>
+		<dt>Item description here</dt>
+		<br>
+		<br>
+		<button type="submit">Purchase Items</button>
+		<br>
+		<br>
+		<button type="submit">Remove</button>
 	</div>
 
 </body>

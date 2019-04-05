@@ -139,6 +139,7 @@ header {
   font-size: 17px;
 }
 
+
 .topnav a:hover {
   background-color: #FFFFFF;
   color: black;
@@ -146,7 +147,7 @@ header {
 
 .topnav a.active {
   background-color: #FFFFFF;
-  color: Black;
+  color: black;
 }
 
 .topnav .search-container {
@@ -194,4 +195,5 @@ header {
   .topnav input[type=text] {
     border: 1px solid #ccc;
   }
+ 
 }
