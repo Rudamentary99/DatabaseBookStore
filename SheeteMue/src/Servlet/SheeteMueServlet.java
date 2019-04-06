@@ -30,7 +30,7 @@ public class SheeteMueServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException {
 		if (request.getServletPath().equals("/SheetieServlet")) {
-			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/jsp/product-page.jsp");
+			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/jsp/index.jsp");
 			requestDispatcher.forward(request, response);
 		} else {
 

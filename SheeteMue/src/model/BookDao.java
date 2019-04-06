@@ -146,6 +146,47 @@ public class BookDao implements Dao<Book> {
 		}
 		return -1;
 	}
+	
+	public Cart loadCart(int userID){
+
+		System.out.println("initializing book.loadCart");
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
+				CallableStatement stmt = cn.prepareCall("{call usp_LoadCart(?)}")) {
+
+			int n = 0;
+			stmt.setInt(++n, userID);
+
+			// executeQuery I expect something//execute I don't expect
+			// anything//executeUpdate get an idea of how many where changed
+			ResultSet rsCircuits = stmt.executeQuery();
+			ArrayList<CartItem> cIs = new ArrayList<>();
+			int i = 0;
+			while (rsCircuits.next()) {
+				CartItem b = new CartItem();
+				b.setBookID(rsCircuits.getInt("BookID"));
+				b.setPublisherID(rsCircuits.getInt("PublisherID"));
+				b.setAuthorName(rsCircuits.getString("AuthorName"));
+				b.setTitle(rsCircuits.getString("Title"));
+				b.setEdition(rsCircuits.getInt("Edition"));
+				b.setPubDate(rsCircuits.getDate("PubDate"));
+				b.setDescription(rsCircuits.getString("Description"));
+				b.setCurrentPrice(rsCircuits.getDouble("CurrentPrice"));
+				b.setAmountInStock(rsCircuits.getInt("AmountInStock"));
+				b.setSavedForLater(rsCircuits.getBoolean("SavedForLater"));
+			cIs.add(b);
+			}
+			System.out.println("search result: " + cIs );
+					return new Cart(cIs);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+
+		
+	}
+	
 	public boolean addToCart(int pUserID, int pBookID) {
 		System.out.println("running addToCart()");
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
@@ -199,7 +240,6 @@ public class BookDao implements Dao<Book> {
 		return -1;
 
 	}
-
 	@Override
 	public void delete(Book objectToCreate) {
 		// TODO Auto-generated method stub

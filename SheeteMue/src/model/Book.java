@@ -13,6 +13,7 @@ public class Book {
 	Double CurrentPrice;
 	int AmountInStock;
 	
+	
 	public int getBookID() {
 		return bookID;
 	}

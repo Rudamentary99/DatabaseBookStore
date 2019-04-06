@@ -27,24 +27,36 @@
 </head>
 <body>
 	<%!BookDao bd = new BookDao();%>
-	<%!User u = new User();%>
-	<%!Book b = new Book();%>
+	<%!User u = new User(); %>
+	<%! Book b = new Book(); %>
 	<header>
 		<h6>Sheet μ</h6>
 		<div class="topnav">
-			<a class="active" href="#home">Home</a> <a href="#shop">Shop</a> <a
-				href="#cart">Cart</a> <a href="#about">About</a> <a href="#contact">Contact</a>
+		<a href="index.jsp">Home</a> <a href="shop.html">Shop</a> <a
+			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
+		
+		<%!String style = "style=\"display:none\"";%>
+		<%
+			u = (User) session.getAttribute("User");
+			if (u != null && u.getFirstName() != null) {
+				style = "";
+			}
+		%>
+		<a <%=style%> href="cart.jsp">Cart</a>
+		<div class="search-container">
+			<form action="search.jsp">
 
-			<div class="search-container">
-				<form action="search.jsp">
-					<a href="#login">Login</a> <input type="text"
-						placeholder="Search.." name="search">
-					<button type="submit">
-						<i class="fa fa-search"></i>
-					</button>
-				</form>
-			</div>
+				<a href="../HTML/create.html">Create Account</a><a class="active"
+					href="login.jsp">Login</a> <input type="text"
+					placeholder="Search.." name="search">
+				<button type="submit">
+					<i class="fa fa-search"></i>
+				</button>
+			</form>
 		</div>
+	</div>
+
+
 	</header>
 	<br>
 	<section class="page" id="fz7md">

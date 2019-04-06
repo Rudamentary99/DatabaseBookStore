@@ -1,3 +1,4 @@
+<%@page import="java.awt.event.WindowStateListener"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="model.User, model.UserDao"%>
@@ -31,14 +32,22 @@
 <body>
 
 	<div class="topnav">
-		<a href="index.html">Home</a> <a href="shop.html">Shop</a> <a
-			href="cart.html">Cart</a> <a href="about.html">About</a> <a
-			href="contact.html">Contact</a>
-
+		<a href="index.jsp">Home</a> <a href="shop.html">Shop</a> <a
+			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
+		<%!User u = new User();%>
+		<%!String style = "style=\"display:none\"";%>
+		<%
+			u = (User) session.getAttribute("User");
+			if (u != null && u.getFirstName() != null) {
+				style = "";
+			}
+		%>
+		<a <%=style%> href="cart.jsp">Cart</a>
 		<div class="search-container">
 			<form action="search.jsp">
-				<a href="create.html">Create Account</a><a class="active"
-					href="login.html">Login</a> <input type="text"
+
+				<a href="../HTML/create.html">Create Account</a><a class="active"
+					href="login.jsp">Login</a> <input type="text"
 					placeholder="Search.." name="search">
 				<button type="submit">
 					<i class="fa fa-search"></i>
@@ -46,28 +55,41 @@
 			</form>
 		</div>
 	</div>
+
 	<br>
 	<div style="padding-left: 16px">
+		<%!String infoStyle;%>
+		<%!String infoTxt;%>
+		<%!String pastPage;%>
 		<%
 			cU = ((User) session.getAttribute("User"));
-			if (cU.getAttemptedLogin().equals("true")) {
-				if (cU.getPassword() != null && cU.getEmail() != null) {
-					if (!cU.getPassword().equals("") && !cU.getEmail().equals(""))
+
+			if (cU.getFirstName() == null) {
+				if (cU.getAttemptedLogin().equals("true")) {
+					if (cU.getPassword() != null && cU.getEmail() != null) {
+
 						nU = ud.loginUser(cU.getEmail(), cU.getPassword());
-					if (nU != null) {
-						session.setAttribute("User", nU);
-						out.print("<h1 style=\"color:green\">enjoy shopping " + nU.getFirstName() + " " + nU.getLastName() +"</h1>");
-						
+						if (nU != null) {
+							session.setAttribute("User", nU);
+							response.sendRedirect("login.jsp");
+
+						} else {
+							session.removeAttribute("User");
+							infoStyle = "color:red";
+							infoTxt = "wrong Username or Password";
+
+						}
+						//u = ud.loginUser(u.getEmail(), u.getPassword());
 					} else {
-						session.removeAttribute("User");
-						out.print("<a style=\"color:red\">wrong Username or Password</a>");
-						
+						infoStyle = "color:red";
+						infoTxt = "please fill all fields";
 					}
-					//u = ud.loginUser(u.getEmail(), u.getPassword());
-				} else {
-					out.print(((User) session.getAttribute("User")).toString());
-					out.print("<a style=\"color:red\">please fill all fields</a>");
+				out.print("<h1 style=\"" + infoStyle + "\">" + infoTxt + "</h1>");
 				}
+			} else {
+				infoTxt = "Enjoy Shopping, " + cU.getFirstName() + " " + cU.getLastName();
+				infoStyle = "color:green";
+			out.print("<h1 style=\"" + infoStyle + "\">" + infoTxt + "</h1>");
 			}
 		%>
 
@@ -81,8 +103,10 @@
 			<button type="submit">Submit</button>
 		</form>
 
+
 	</div>
 </body>
+
 		</html>
 	</header>
 </body>
