@@ -146,27 +146,9 @@ public class BookDao implements Dao<Book> {
 		}
 		return -1;
 	}
-	public boolean addToCart(int pUserID, int pBookID) {
-		System.out.println("running addToCart()");
-		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
-				CallableStatement stmt = cn.prepareCall("{call usp_AddToCart(?,?)}")) {
-			int n = 0;
-			stmt.setInt(++n, pUserID);
-			stmt.setInt(++n, pBookID);
-				ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				System.out.println("success");
-				return true; 
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("failure");
-		return false;
-		
-		
-	}
+	
+	
+	
 	public int updateBookPrice(Book objectToCreate) {
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_UpdateBookPrice(?,?)}")) {
@@ -199,7 +181,6 @@ public class BookDao implements Dao<Book> {
 		return -1;
 
 	}
-
 	@Override
 	public void delete(Book objectToCreate) {
 		// TODO Auto-generated method stub

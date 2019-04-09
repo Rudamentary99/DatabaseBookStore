@@ -1,18 +1,28 @@
 package model;
 
+import java.io.File;
 import java.sql.Date;
 
 public class Book {
 	int bookID;
 	int publisherID; 
-	String AuthorName;
+	String authorName;
 	String title;
 	int edition;
-	Date PubDate;
-	String Description;
-	Double CurrentPrice;
-	int AmountInStock;
+	Date pubDate;
+	String description;
+	Double currentPrice;
+	int amountInStock;
+	File img;
 	
+	public File getImg() {
+		return img;
+	}
+	public void setImg(File img) {
+		File nImg = new File("/WebContent/img/" + bookID +".png");
+		img.renameTo(nImg);
+			this.img = nImg;
+	}
 	public int getBookID() {
 		return bookID;
 	}
@@ -29,10 +39,10 @@ public class Book {
 		this.publisherID = publisherID;
 	}
 	public String getAuthorName() {
-		return AuthorName;
+		return authorName;
 	}
 	public void setAuthorName(String authorName) {
-		AuthorName = authorName;
+		this.authorName = authorName;
 	}
 	public String getTitle() {
 		return title;
@@ -47,28 +57,28 @@ public class Book {
 		this.edition = edition;
 	}
 	public Date getPubDate() {
-		return PubDate;
+		return pubDate;
 	}
 	public void setPubDate(Date pubDate) {
-		PubDate = pubDate;
+		this.pubDate = pubDate;
 	}
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 	public Double getCurrentPrice() {
-		return CurrentPrice;
+		return currentPrice;
 	}
 	public void setCurrentPrice(Double currentPrice) {
-		CurrentPrice = currentPrice;
+		this.currentPrice = currentPrice;
 	}
 	public int getAmountInStock() {
-		return AmountInStock;
+		return amountInStock;
 	}
 	public void setAmountInStock(int amountInStock) {
-		AmountInStock = amountInStock;
+		this.amountInStock = amountInStock;
 	}
 	@Override
 	public String toString() {
