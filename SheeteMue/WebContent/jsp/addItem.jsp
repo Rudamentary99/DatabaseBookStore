@@ -4,6 +4,7 @@
 	import="model.Publisher, model.PublisherDao, model.Book, model.BookDao, java.util.ArrayList"%>
 <!DOCTYPE html>
 
+
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -18,9 +19,9 @@
 </head>
 
 <body>
-	<header>
+
 		<h6>Sheet μ</h6>
-		<html>
+
 <body>
 	<%!PublisherDao pd = new PublisherDao();%>
 
@@ -61,10 +62,9 @@
 				id="title"><br>
 			<br> Author Name: <input type="text" placeholder="Author"
 				name="authorName" id="authorName"><br>
-			<br> Edition: <input type="number" step="0.1" placeholder="Edition"
+			<br> Edition: <input type="number" step="1" placeholder="Edition"
 				name="edition" id="edition"><br>
-			<br> Publish Date: <input type="date" placeholder="4-1-19"
-				name="pubDate" id="pubDate"><br>
+			<br> Publish Date: <input type="date" name="pubDate" id="pubDate"><br>
 			<br> Description: <input type="text" placeholder="Description"
 				name="description" id="description"><br>
 			<br> Price: <input type="number" step=".01" placeholder="Price"
@@ -76,13 +76,8 @@
 			<br>
 		</form>
 	</div>
-	<%! Book b = new Book(); %>
-	<% b = (Book) session.getAttribute("NewItem");
 	
-		out.print(b.getTitle());
-	%>
 </body>
-		</html>
-	</header>
+	
 </body>
 </html>
