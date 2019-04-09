@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page language="java" contentType="text/html; charset=UTF-8"%>
-<%@page import="model.User, model.Book, model.BookDao"%>
+<%@page import="model.User, model.Book, model.BookDao, model.CartDao"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,14 +27,15 @@
 </head>
 <body>
 	<%!BookDao bd = new BookDao();%>
-	<%!User u = new User();%>
-	<%!Book b = new Book();%>
+	<%!User u = new User(); %>
+	<%! Book b = new Book(); %>
+	<%! CartDao cd = new CartDao(); %>
 	<header>
 		<h6>Sheet μ</h6>
 		<div class="topnav">
 		<a href="index.jsp">Home</a> <a href="shop.html">Shop</a> <a
 			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
-		<%!User u = new User();%>
+		
 		<%!String style = "style=\"display:none\"";%>
 		<%
 			u = (User) session.getAttribute("User");
@@ -138,7 +139,7 @@
 							if (session.getAttribute("User") != null) {
 								u = (User) session.getAttribute("User");
 
-								if (bd.addToCart(u.getUserID(), Integer.parseInt(request.getParameter("id")))) {
+								if (cd.create(u.getUserID(), Integer.parseInt(request.getParameter("id")))) {
 									out.print("Item has been added");
 								} else {
 									out.print("Item is already in you cart");

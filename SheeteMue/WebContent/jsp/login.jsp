@@ -26,9 +26,8 @@
 </head>
 
 <body>
-	<header>
-		<h6>Sheet μ</h6>
-		<html>
+
+	<h6>Sheet μ</h6>
 <body>
 
 	<div class="topnav">
@@ -84,12 +83,12 @@
 						infoStyle = "color:red";
 						infoTxt = "please fill all fields";
 					}
-				out.print("<h1 style=\"" + infoStyle + "\">" + infoTxt + "</h1>");
+					out.print("<h1 style=\"" + infoStyle + "\">" + infoTxt + "</h1>");
 				}
 			} else {
 				infoTxt = "Enjoy Shopping, " + cU.getFirstName() + " " + cU.getLastName();
 				infoStyle = "color:green";
-			out.print("<h1 style=\"" + infoStyle + "\">" + infoTxt + "</h1>");
+				out.print("<h1 style=\"" + infoStyle + "\">" + infoTxt + "</h1>");
 			}
 		%>
 
@@ -106,8 +105,5 @@
 
 	</div>
 </body>
-
-		</html>
-	</header>
 </body>
 </html>
