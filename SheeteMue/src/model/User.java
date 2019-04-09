@@ -8,6 +8,7 @@ public class User {
 	String firstName;
 	String lastName;
 	String email;
+	String email2;
 	String phone;
 	Date date_of_birth;
 	Date created_at;
@@ -54,6 +55,14 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getEmail2() {
+		return email2;
+	}
+
+	public void setEmail2(String email) {
+		this.email2 = email2;
 	}
 
 	public String getPhone() {
