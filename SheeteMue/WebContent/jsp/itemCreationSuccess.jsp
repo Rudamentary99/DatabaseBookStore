@@ -4,7 +4,6 @@
     
 
 <!DOCTYPE html>
-<jsp:setProperty property="img" name="NewItem" param="img"/>
 <html>
 <head>
   <meta charset="utf-8">
@@ -21,11 +20,8 @@
   <h6>Sheet μ</h6>
 <html>
 <body>
-<%! Book b = new Book();
-BookDao bd = new BookDao();%>
-<%
-b = ((Book) session.getAttribute("NewItem"));
-%>
+
+
   <div class="topnav">
     <a href="index.html">Home</a>
     <a href="shop.html">Shop</a>
@@ -42,7 +38,10 @@ b = ((Book) session.getAttribute("NewItem"));
     </div>
   </div>
 success
-<%-- <img alt="test" src=<%= "\"" + "../img/" + "img" + "\"" %>> --%>
-<%= b.getImg() %>
+<br>
+<%! String name; %>
+<% name =(String) session.getAttribute("id");  %>
+ <img alt="test" src=<%= "../img/" + name + ".png" %>> 
+
 </body>
 </html>

@@ -2,15 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ page import="model.Book, model.BookDao" %>
 <!DOCTYPE html>
-<%-- <jsp:useBean id="NewItem" class="model.Book" scope="session"></jsp:useBean> --%>
-<%-- <jsp:setProperty property="publisherID" name="NewItem" param="publisherID"/> --%>
-<%-- <jsp:setProperty property="authorName" name="NewItem" param="authorName"/> --%>
-<%-- <jsp:setProperty property="title" name="NewItem" param="title"/> --%>
-<%-- <jsp:setProperty property="edition" name="NewItem" param="edition"/> --%>
-<%-- <jsp:setProperty property="pubDate" name="NewItem" param="pubDate"/> --%>
-<%-- <jsp:setProperty property="description" name="NewItem" param="description"/> --%>
-<%-- <jsp:setProperty property="currentPrice" name="NewItem" param="currentPrice"/> --%>
-<%-- <jsp:setProperty property="amountInStock" name="NewItem" param="amountInStock"/> --%>
+
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -27,12 +19,7 @@
   <h6>Sheet μ</h6>
 <html>
 <body>
-<%! BookDao bd = new BookDao(); %>
-<%! Book b = new Book(); %>
-<% b = (Book) session.getAttribute("NewItem");
-session.setAttribute("NewItem", bd.load(1));
 
-%>
   <div class="topnav">
     <a href="index.html">Home</a>
     <a href="shop.html">Shop</a>
@@ -53,8 +40,8 @@ session.setAttribute("NewItem", bd.load(1));
 
 <div style="padding-left:16px">
   Upload Musics stock photo<br><br>
-<form action="/SheeteMue/SheetieServlet"  enctype = "multipart/form-data" method="post">
-  <input type="hidden" name="action" id="action" value="SaveFile">
+<form action="../CreateBook?action=saveFile"  enctype="multipart/form-data" method="post">
+	
   <input id="img" name="img" type="file" accept=".png" ><br><br>
   <button type="submit">Submit</button><br><br><br>
   </form>

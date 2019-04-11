@@ -48,7 +48,8 @@
 	<div style="padding-left: 16px">
 		Create a Book<br>
 		<br>
-		<form action="imgUpload.jsp" method="post">
+		<form action="../CreateBook" method="post">
+			<input type="hidden" name="action" value="createBook">
 			Publisher: <select name="publisherID">
 				<%
 					for (Publisher p : pd.loadAll()) {
@@ -59,18 +60,18 @@
 				%>
 			</select> <br>
 			<br> Title: <input type="text" placeholder="Title" name="title"
-				id="title"><br>
+				id="title" required><br>
 			<br> Author Name: <input type="text" placeholder="Author"
-				name="authorName" id="authorName"><br>
+				name="authorName" id="authorName" required><br>
 			<br> Edition: <input type="number" step="1" placeholder="Edition"
-				name="edition" id="edition"><br>
-			<br> Publish Date: <input type="date" name="pubDate" id="pubDate"><br>
+				name="edition" id="edition" required><br>
+			<br> Publish Date: <input type="date" name="pubDate" id="pubDate" required><br>
 			<br> Description: <input type="text" placeholder="Description"
-				name="description" id="description"><br>
+				name="description" id="description" required><br>
 			<br> Price: <input type="number" step=".01" placeholder="Price"
-				name="currentPrice" id="currentPrice"><br>
+				name="currentPrice" id="currentPrice" required><br>
 			<br> Amount in Stock: <input type="number" step="1" placeholder="Stock"
-				name="amountInStock" id="amountInStock"><br>
+				name="amountInStock" id="amountInStock" required><br>
 			<button type="submit">Submit</button>
 			
 			<br>
