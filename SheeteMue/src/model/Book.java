@@ -1,6 +1,8 @@
 package model;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 
 public class Book {
@@ -13,16 +15,13 @@ public class Book {
 	String description;
 	Double currentPrice;
 	int amountInStock;
-	File img;
 	
-	public File getImg() {
-		return img;
+	
+	public File getImg(int pBookID) {
+		Path Img= Paths.get("/img/" + Integer.toString(pBookID));
+		return Img.toFile();
 	}
-	public void setImg(File img) {
-		File nImg = new File("/WebContent/img/" + bookID +".png");
-		img.renameTo(nImg);
-			this.img = nImg;
-	}
+	
 	public int getBookID() {
 		return bookID;
 	}

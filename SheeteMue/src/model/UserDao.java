@@ -27,9 +27,9 @@ public class UserDao implements Dao<User>{
 			stmt.setString(++n, objectToCreate.getEmail());
 			stmt.setString(++n, objectToCreate.getPassword());
 			stmt.setString(++n, objectToCreate.getPhone());
-			stmt.setDate(++n, objectToCreate.getDateOfBirth());
-			stmt.setDate(++n, objectToCreate.getCreatedAt());
-			stmt.setBoolean(++n, objectToCreate.IsAdmin());
+			stmt.setDate(++n, objectToCreate.getDate_of_birth());
+			stmt.setDate(++n, objectToCreate.getCreated_at());
+			stmt.setBoolean(++n, objectToCreate.isAdmin());
 			
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -39,9 +39,9 @@ public class UserDao implements Dao<User>{
 				objectToCreate.setEmail(rs.getString("Email"));
 				objectToCreate.setPassword(rs.getString("Password"));
 				objectToCreate.setPhone(rs.getString("Phone"));
-				objectToCreate.setDateOfBirth(rs.getDate("DateOfBirth"));
-				objectToCreate.setCreatedAt(rs.getDate("CreatedAt"));
-				objectToCreate.setIsAdmin(rs.getBoolean("IsAdmin"));
+				objectToCreate.setDate_of_birth(rs.getDate("DateOfBirth"));
+				objectToCreate.setCreated_at(rs.getDate("CreatedAt"));
+				objectToCreate.setAdmin(rs.getBoolean("IsAdmin"));
 				return objectToCreate;
 			}
 		} catch (SQLException e) {
@@ -51,8 +51,8 @@ public class UserDao implements Dao<User>{
 		return null;
 	}
 
-	@Override
-	public int updateEmail(User objectToUpdate) {
+	
+	public User updateEmail(User objectToUpdate) {
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_UpdateEmail(?,?,?)}")) {
 			int n = 0;
@@ -62,7 +62,7 @@ public class UserDao implements Dao<User>{
 			
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				objectToCreate.setEmail(rs.getString("Email2"));
+				objectToUpdate.setEmail(rs.getString("Email2"));
 				return objectToUpdate;
 			}
 		} catch (SQLException e) {
@@ -72,7 +72,7 @@ public class UserDao implements Dao<User>{
 		return null;
 	}
 
-	public int updatePhone(User objectToUpdate) {
+	public User updatePhone(User objectToUpdate) {
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_UpdatePhone(?,?,?)}")) {
 			int n = 0;
@@ -82,7 +82,7 @@ public class UserDao implements Dao<User>{
 			
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				objectToCreate.setPhone(rs.getString("Phone"));
+				objectToUpdate.setPhone(rs.getString("Phone"));
 				return objectToUpdate;
 			}
 		} catch (SQLException e) {
@@ -142,6 +142,11 @@ public class UserDao implements Dao<User>{
 	public List<User> loadAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public int update(User objectToCreate) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

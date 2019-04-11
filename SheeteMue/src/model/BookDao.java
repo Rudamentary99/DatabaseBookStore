@@ -20,7 +20,7 @@ public class BookDao implements Dao<Book> {
 
 	@Override
 	public Book create(Book objectToCreate) {
-
+		System.out.println("running BookDao.create()");
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_CreateBook(?,?,?,?,?,?,?,?)}")) {
 			int n = 0;
@@ -34,18 +34,23 @@ public class BookDao implements Dao<Book> {
 			stmt.setInt(++n, objectToCreate.getAmountInStock());
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
+				System.out.println("success");
 				objectToCreate.setBookID(rs.getInt("BookID"));
 				return objectToCreate;
 			}
+			System.out.println("not Item");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("failure");
 		return null;
 	}
 
 	@Override
 	public Book load(int keyValueToLoad) {
+		System.out.println("running BooDao.create()");
+
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_LoadBook(?)}")) {
 
@@ -67,7 +72,7 @@ public class BookDao implements Dao<Book> {
 				b.setDescription(rsCircuits.getString("Description"));
 				b.setCurrentPrice(rsCircuits.getDouble("CurrentPrice"));
 				b.setAmountInStock(rsCircuits.getInt("AmountInStock"));
-
+				System.out.println("success");
 				return b;
 
 			}
@@ -114,7 +119,7 @@ public class BookDao implements Dao<Book> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		System.out.println("failure");
 		return null;
 
 	}
