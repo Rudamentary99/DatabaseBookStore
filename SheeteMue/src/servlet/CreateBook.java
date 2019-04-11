@@ -32,13 +32,15 @@ import model.BookDao;
 /**
  * Servlet implementation class CreateBook
  */
-@WebServlet("/CreateBook")
+@WebServlet(urlPatterns = { "/CreateBook" })
 @MultipartConfig
 public class CreateBook extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final static Logger LOGGER = Logger.getLogger(CreateBook.class.getCanonicalName());
 	private Book b = new Book();
 	private String forwardPath;
+	private BookDao bd = new BookDao();
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -56,21 +58,20 @@ public class CreateBook extends HttpServlet {
 		// TODO Auto-generated method stub
 		String action = request.getParameter("action");
 		System.out.println(action);
-		if(action != null && action.equals("createBook")) {
-			BookDao bd = new BookDao();
+		 if (action != null && action.equals("createBook")) {
 			Book b = new Book();
-				
+
 			b.setPublisherID(Integer.parseInt(request.getParameter("publisherID")));
 			b.setTitle(request.getParameter("title"));
 			b.setAuthorName(request.getParameter("authorName"));
 			b.setPubDate(toSqlDate(request.getParameter("pubDate")));
-			
+
 			b.setCurrentPrice(Double.parseDouble(request.getParameter("currentPrice")));
 			b.setAmountInStock(Integer.parseInt(request.getParameter("amountInStock")));
 			b.setDescription(request.getParameter("description"));
-			b=bd.create(b);
-			if ( b != null && b.getTitle() != null) {
-				
+			b = bd.create(b);
+			if (b != null && b.getTitle() != null) {
+
 				request.getSession().setAttribute("id", Integer.toString(b.getBookID()));
 				forwardPath = "/jsp/imgUpload.jsp";
 				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(forwardPath);
@@ -78,19 +79,34 @@ public class CreateBook extends HttpServlet {
 			} else {
 				System.out.println("addItem Error");
 			}
+		} else if (action != null && action.equals("editItem")) {
+			Book b = bd.load(Integer.parseInt(request.getParameter("id")));
+			request.setAttribute("EditItem", b);
+			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/jsp/addItem.jsp");
+			requestDispatcher.forward(request, response);
+
+		} else if (action != null && action.endsWith("saveEdit")) {
+			Book b = new Book();
+			b.setBookID(request.getParameter("id"));
+			b.setTitle(request.getParameter("title"));
+			b.setAuthorName(request.getParameter("authorName"));
+			b.setPubDate(toSqlDate(request.getParameter("pubDate")));
+			b.setEdition(Integer.parseInt(request.getParameter("edition")));
+			b.setDescription(request.getParameter("description"));
+			b.setCurrentPrice(Double.parseDouble(request.getParameter("currentPrice")));
+			b.setAmountInStock(Integer.parseInt("amountInStock"));
+			bd.update(b);
 		} else if (action != null && action.equals("saveFile")) {
-			
+
 			saveImg(request, response);
-				
-			
-				
-		}	else {
-			
+
+		} else {
+
 			forwardPath = "/jsp/index.jsp";
 			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(forwardPath);
 			requestDispatcher.forward(request, response);
 		}
-		
+
 	}
 
 	/**
@@ -99,15 +115,16 @@ public class CreateBook extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-			doGet(request, response);
-		
+
+		doGet(request, response);
+
 	}
+
 // the following method was modeled after https://docs.oracle.com/javaee/6/tutorial/doc/glraq.html
 	protected void saveImg(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		HttpSession session=request.getSession();  
+		HttpSession session = request.getSession();
 		// Create path components to save the file
 		System.out.println("file made");
 		final String fileName = Integer.toString(((Book) session.getAttribute("NewItem")).getBookID()) + ".png";
@@ -119,41 +136,38 @@ public class CreateBook extends HttpServlet {
 		final PrintWriter writer = response.getWriter();
 
 		try {
-			
-			if(Files.exists(p)) {
+
+			if (Files.exists(p)) {
 				System.out.println("deleting existing file");
 				Files.delete(p);
 			}
 			System.out.println("saving file");
 			Files.createFile(p);
 			System.out.println("file saved");
-		
-	        	//get ready to write to file 
-	        	out = new FileOutputStream(p.toString());
-	        	//getFile
-	            filecontent = filePart.getInputStream();
 
-	            int read = 0;
-	            final byte[] bytes = new byte[1024];
+			// get ready to write to file
+			out = new FileOutputStream(p.toString());
+			// getFileContents
+			filecontent = filePart.getInputStream();
 
-	            
-	            while ((read = filecontent.read(bytes)) != -1) {
-	                out.write(bytes, 0, read);
-	            }
-	            
-				
-	            LOGGER.log(Level.INFO, "File{0}being uploaded to {1}", 
-	                    new Object[]{fileName, p});
-	            forwardPath = "/jsp/itemCreationSuccess.jsp";
-	            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(forwardPath);
-	    		requestDispatcher.forward(request, response);
-	        } catch (FileNotFoundException fne) {
+			int read = 0;
+			final byte[] bytes = new byte[1024];
 
-	            LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}", 
-	                    new Object[]{fne.getMessage()});
-	            forwardPath ="/jsp/imgUpload.jsp";
-	    		RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(forwardPath);
-	    		requestDispatcher.forward(request, response);
+			// write fileContents to new file
+			while ((read = filecontent.read(bytes)) != -1) {
+				out.write(bytes, 0, read);
+			}
+
+			LOGGER.log(Level.INFO, "File{0}being uploaded to {1}", new Object[] { fileName, p });
+			forwardPath = "/jsp/itemCreationSuccess.jsp";
+			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(forwardPath);
+			requestDispatcher.forward(request, response);
+		} catch (FileNotFoundException fne) {
+
+			LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}", new Object[] { fne.getMessage() });
+			forwardPath = "/jsp/imgUpload.jsp";
+			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(forwardPath);
+			requestDispatcher.forward(request, response);
 		} finally {
 			if (out != null) {
 				out.close();
@@ -165,19 +179,20 @@ public class CreateBook extends HttpServlet {
 				writer.close();
 			}
 		}
-		
+
 	}
+
 	public java.sql.Date toSqlDate(String htmlDate) {
 		String date = htmlDate;
 		date.replace("[", "");
 		date.replace("]", "");
-		
+
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-dd-mm");
 		Date jDate;
 		try {
 			jDate = df.parse(date);
 			return new java.sql.Date(jDate.getTime());
-	
+
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
