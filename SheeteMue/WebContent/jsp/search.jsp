@@ -24,7 +24,7 @@
 	
 
 	<div class="search-container">
-		<form action="../jsp/search.jsp">
+		<form action="/SheeteMue/jsp/search.jsp">
 			<input type="text" placeholder="Search.." name="search">
 			<button type="submit">
 				<i class="fa fa-search"></i>
@@ -43,7 +43,7 @@
 
 
 	<a
-		href=<%="../jsp/item.jsp?id=" + b.getBookID() + "&title=" + makeParameter(b.getTitle())
+		href=<%="/SheeteMue/jsp/item.jsp?id=" + b.getBookID() + "&title=" + makeParameter(b.getTitle())
 							+ "&description=" + makeParameter(b.getDescription()) + "&price="
 							+ makeParameter(Double.toString(b.getCurrentPrice()))%>>
 		<%=b.getTitle()%></a>

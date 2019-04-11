@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@page import="model.User" %>
+<%@page import="model.User"%>
 <!doctype html>
 
 <html lang="en">
@@ -19,48 +19,43 @@
 <body>
 	<header>
 		<h6>Sheet μ</h6>
-		<html>
-<body>
 
-	
 
-	<div class="topnav">
-		<a href="index.jsp">Home</a> <a href="shop.html">Shop</a> <a
-			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
-		<%!User u = new User();%>
-		<%!String style = "style=\"display:none\"";%>
-		<%
-			u = (User) session.getAttribute("User");
-			if (u != null && u.getFirstName() != null) {
-				style = "";
-			}
-		%>
-		<a <%=style%> href="cart.jsp">Cart</a>
-		<div class="search-container">
-			<form action="search.jsp">
 
-				<a href="../HTML/create.html">Create Account</a><a class="active"
-					href="login.jsp">Login</a> <input type="text"
-					placeholder="Search.." name="search">
-				<button type="submit">
-					<i class="fa fa-search"></i>
-				</button>
-			</form>
+		<div class="topnav">
+			<a href="index.jsp">Home</a> <a href="shop.html">Shop</a> <a
+				href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
+			<%!User u = new User();%>
+			<%!String style = "style=\"display:none\"";%>
+			<%
+				u = (User) session.getAttribute("User");
+				if (u != null && u.getFirstName() != null) {
+					style = "";
+				}
+			%>
+			<a <%=style%> href="cart.jsp">Cart</a>
+			<div class="search-container">
+				<form action="search.jsp">
+
+					<a href="../HTML/create.html">Create Account</a><a class="active"
+						href="login.jsp">Login</a> <input type="text"
+						placeholder="Search.." name="search">
+					<button type="submit">
+						<i class="fa fa-search"></i>
+					</button>
+				</form>
+			</div>
 		</div>
-	</div>
 
 
 
-	<div style="padding-left: 16px">
-		<h2>Welcome to Sheet μ</h2>
-		<h3>The Sheet Music Store for the Modern Age</h3>
-		<p>All of our sheet music is provided by your favorite artists,
-			including independent artists.</p>
-		<p>Browse around and see if you find something you like!</p>
-	</div>
-
-</body>
-		</html>
-	</header>
+		<div style="padding-left: 16px">
+			<h2>Welcome to Sheet μ</h2>
+			<h3>The Sheet Music Store for the Modern Age</h3>
+			<p>All of our sheet music is provided by your favorite artists,
+				including independent artists.</p>
+			<p>Browse around and see if you find something you like!</p>
+		</div>
+		</header>
 </body>
 </html>

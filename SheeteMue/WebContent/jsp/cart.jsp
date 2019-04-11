@@ -113,9 +113,9 @@
 					href=<%="/SheeteMue/jsp/item.jsp?id=" + cI.getBookID() + "&title=" + makeParameter(cI.getTitle())
 							+ "&description=" + makeParameter(cI.getDescription()) + "&price="
 							+ makeParameter(Double.toString(cI.getCurrentPrice()))%>>
-					<p><%=cI.getTitle()%></p>
-					<p>
-						$<%=cI.getCurrentPrice()%></p> <br>
+					<%=cI.getTitle()%>
+					
+						$<%=cI.getCurrentPrice()%> <br>
 
 				</a>
 					<form action="cart.jsp">

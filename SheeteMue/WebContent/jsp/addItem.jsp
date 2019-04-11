@@ -25,19 +25,6 @@
 <body>
 	<%!PublisherDao pd = new PublisherDao();%>
 
-	<%!
-		Book b = new Book();
-		String select = "";
-		String vTitle ="";
-		String vAuthorName ="";
-		String vPubDate = "";
-		String vDescription= "";
-		String vEdition = "";
-		String vCurrentPrice = "";
-		String vStockAmount = "";
-		String val = "value=";
-		String action = "createBook";
-		%>
 	<div class="topnav">
 		<a href="index.html">Home</a> <a href="shop.html">Shop</a> <a
 			href="cart.html">Cart</a> <a href="about.html">About</a> <a
@@ -55,55 +42,36 @@
 		</div>
 	</div>
 	<br>
-	<%
-		b = (Book) request.getAttribute("EditItem");
-		if(b != null && b.getTitle() != null) {
-			action = "saveEdit";
-			vTitle = val + b.getTitle();
-			vAuthorName = val + "\"" + b.getAuthorName() + "\"";
-			vDescription = val + "\"" + b.getDescription() + "\"";
-			vEdition = val + "\""+  b.getEdition() + "\"";
-			vPubDate = val +"\""+  b.getPubDate().toString()+"\"";
-			vCurrentPrice = val +"\""+ b.getCurrentPrice()+"\"";
-			vStockAmount = val +"\""+ b.getAmountInStock()+"\"";
-			
-		}
-	%>
+	
 	
 	
 	<div style="padding-left: 16px">
 		Create a Book<br>
 		<br>
 		<form action="../CreateBook" method="post">
-		
-			<input type="hidden" name="action" value=<%= action %>>
-			<input type="hidden" name="id" value=<%= b.getBookID() %>>
+			<input type="hidden" name="action" value="createBook">
 			Publisher: <select name="publisherID">
 				<%
 					for (Publisher p : pd.loadAll()) {
-						select = "";
-						if (p.getPublisherID() == b.getPublisherID()){
-							select = "selected";
-						} else
 				%>
-				<option value=<%="\"" + p.getPublisherID() + "\" " + select%>><%=p.getName()%></option>
+				<option value=<%="\"" + p.getPublisherID() + "\""%>><%=p.getName()%></option>
 				<%
 					}
 				%>
 			</select> <br>
 			<br> Title: <input type="text" placeholder="Title" name="title"
-				id="title" <%= vTitle %> required><br>
+				id="title" required><br>
 			<br> Author Name: <input type="text" placeholder="Author"
-				name="authorName" id="authorName" <%= vAuthorName %>required><br>
+				name="authorName" id="authorName" required><br>
 			<br> Edition: <input type="number" step="1" placeholder="Edition"
-				name="edition" id="edition" <%= vEdition %>required><br>
-			<br> Publish Date: <input type="date" name="pubDate" id="pubDate" <%=vPubDate %>required><br>
+				name="edition" id="edition" required><br>
+			<br> Publish Date: <input type="date" name="pubDate" id="pubDate" required><br>
 			<br> Description: <input type="text" placeholder="Description"
-				name="description" id="description" <%= vDescription %>required><br>
+				name="description" id="description" required><br>
 			<br> Price: <input type="number" step=".01" placeholder="Price"
-				name="currentPrice" id="currentPrice" <%=vCurrentPrice %> required><br>
+				name="currentPrice" id="currentPrice" required><br>
 			<br> Amount in Stock: <input type="number" step="1" placeholder="Stock"
-				name="amountInStock" id="amountInStock" <%= vStockAmount %>required><br>
+				name="amountInStock" id="amountInStock" required><br>
 			<button type="submit">Submit</button>
 			
 			<br>
