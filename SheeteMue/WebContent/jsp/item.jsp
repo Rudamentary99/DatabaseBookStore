@@ -86,7 +86,6 @@
 				<div class="ecom-style-product-info">
 					<h1 itemprop="name" class="ecom-style-product-name"><%=request.getParameter("title")%></h1>
 					<div class="ecom-style-sku">
-						SKU: <span itemprop="sku">0001</span>
 					</div>
 					<div id="price" class="ecom-style-price" itemprop="offers"
 						itemtype="http://schema.org/Offer" itemscope>
@@ -163,6 +162,18 @@
 								value="true">
 							<button type="submit">Add To Cart</button>
 						</form>
+					<%if (u != null && u.getFirstName() != null && u.isAdmin()) { %>
+						<form action = "../CreateBook" method="post">
+							<input type="hidden" name="action" value="editItem">
+							<input type="hidden" name="id" value=<%= "\"" + request.getParameter("id") + "\"" %>>
+							<button type="submit">Edit</button>
+						</form>
+						<form action="../CreateBook" method="post">
+							<input type="hidden" name="action" value="editPhotoByte">
+							<input type="hidden" name="id" value=<%= "\"" + request.getParameter("id") + "\"" %>>
+							<button type="submit">Edit Foley</button>
+						</form>
+						<%} %>
 					</div>
 
 				</div>
