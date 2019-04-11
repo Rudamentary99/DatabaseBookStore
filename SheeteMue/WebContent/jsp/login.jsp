@@ -22,11 +22,10 @@
 <body>
 
 	<h6>Sheet μ</h6>
-<body>
+
 
 	<div class="topnav">
-		<a href="index.jsp">Home</a> <a href="shop.html">Shop</a> <a
-			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
+		<a href="index.jsp">Home</a> <a href="shop.html">Shop</a> 
 		<%!String mStyle;
 	String mMessage;
 
@@ -38,11 +37,13 @@
 				style = "";
 			}
 		%>
-		<a <%=style%> href="SheetMue/jsp/cart.jsp">Cart</a>
+		<a <%=style%> href="cart.jsp">Cart</a>
+		<a
+			href="../HTML/about.html">About</a> <a href="../HTML/contact.html">Contact</a>
 		<div class="search-container">
 			<form action="search.jsp">
 
-				<a href="../HTML/create.html">Create Account</a><a class="active"
+				<a class="active"
 					href="login.jsp">Login</a> <input type="text"
 					placeholder="Search.." name="search">
 				<button type="submit">
@@ -51,11 +52,11 @@
 			</form>
 		</div>
 	</div>
-
+<body>
 	<br>
 	<div style="padding-left: 16px">
 		
-
+		Don't have account? <a href="../HTML/create.html">Create Account</a>
 		<% 
 		mStyle = (String) request.getAttribute("style");
 		mMessage = (String) request.getAttribute("message");

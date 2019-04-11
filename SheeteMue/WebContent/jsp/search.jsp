@@ -10,21 +10,22 @@
 
 <title>Sheet μ | Search</title>
 
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href= <%= "\"" + request.getContextPath() + "/css/style.css\"" %>>
 <meta id="wixMobileViewport" name="viewport"
 	content="width=980, user-scalable=yes" />
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+<header></header>
 	<%!BookDao bd = new BookDao();%>
 	<%!ArrayList<SearchBook> searchBooks = new ArrayList<>();%>
 	<%!ArrayList<Integer> bookIDs = new ArrayList<>();%>
 	<%!User u = new User();%>
-	
+
 
 	<div class="search-container">
-		<form action="/SheeteMue/jsp/search.jsp">
+		<form action="../jsp/search.jsp">
 			<input type="text" placeholder="Search.." name="search">
 			<button type="submit">
 				<i class="fa fa-search"></i>
@@ -42,11 +43,16 @@
 	%>
 
 
-	<a
-		href=<%="/SheeteMue/jsp/item.jsp?id=" + b.getBookID() + "&title=" + makeParameter(b.getTitle())
-							+ "&description=" + makeParameter(b.getDescription()) + "&price="
-							+ makeParameter(Double.toString(b.getCurrentPrice()))%>>
-		<%=b.getTitle()%></a>
+	<form action="item.jsp" method="post">
+		<input type="hidden" value="action" value="viewItem"> <input
+			type="hidden" name="id" value=<%="\"" + b.getBookID() + "\""%>> <input
+			type="hidden" name="title" value=<%="\"" + b.getTitle() + "\""%>> <input
+			type="hidden" name="description" value=<%="\"" + b.getDescription() + "\""%>> <input
+			type="hidden" name="price" value=<%="\"" + b.getCurrentPrice() + "\""%>> <input
+			type="hidden" name="stockAmount" value=<%="\"" + b.getAmountInStock() + "\""%>>
+		<button type="submit"><%=b.getTitle() + "   " + b.getCurrentPrice()%></button>
+
+	</form>
 	<br>
 
 	<%

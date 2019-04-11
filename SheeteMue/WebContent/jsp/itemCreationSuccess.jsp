@@ -18,6 +18,8 @@
 <body>
   <header>
   <h6>Sheet μ</h6>
+<html>
+<body>
 
 
   <div class="topnav">
@@ -40,6 +42,6 @@ success
 <%! String name; %>
 <% name =(String) session.getAttribute("id");  %>
  <img alt="test" src=<%= "../img/" + name + ".png" %>> 
-</header>
+
 </body>
 </html>

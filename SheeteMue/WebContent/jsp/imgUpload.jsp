@@ -17,6 +17,8 @@
 <body>
   <header>
   <h6>Sheet μ</h6>
+<html>
+<body>
 
   <div class="topnav">
     <a href="index.html">Home</a>
@@ -44,6 +46,9 @@
   <button type="submit">Submit</button><br><br><br>
   </form>
 </div>
+
+</body>
+</html>
 </header>
 </body>
 </html>
