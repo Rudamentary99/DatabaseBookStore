@@ -38,7 +38,7 @@
 				style = "";
 			}
 		%>
-		<a <%=style%> href="cart.jsp">Cart</a>
+		<a <%=style%> href="SheetMue/jsp/cart.jsp">Cart</a>
 		<div class="search-container">
 			<form action="search.jsp">
 
