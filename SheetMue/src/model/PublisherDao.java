@@ -19,25 +19,74 @@ public class PublisherDao implements Dao<Publisher> {
 	}
 	@Override
 	public Publisher create(Publisher objectToCreate) {
-		// TODO Auto-generated method stub
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
+				CallableStatement stmt = cn.prepareCall("{call usp_CreatePublisher(?,?,?)}")) {
+			int n = 0;
+			stmt.setString(++n, objectToCreate.getName());
+			stmt.setString(++n, objectToCreate.getEmail());
+			stmt.setString(++n, objectToCreate.getPhone());
+			
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				objectToCreate.setName(rs.getString("PublisherName"));
+				objectToCreate.setEmail(rs.getString("Email"));
+				objectToCreate.setPhone(rs.getString("Phone"));
+				return objectToCreate;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public int update(Publisher objectToCreate) {
-		// TODO Auto-generated method stub
-		return 0;
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
+				CallableStatement stmt = cn.prepareCall("{call usp_UpdatePhone(?,?)}")) {
+			int n = 0;
+			stmt.setString(++n, objectToCreate.getName());
+			stmt.setString(++n, objectToCreate.getEmail());
+			stmt.setString(++n, objectToCreate.getPhone());
+			stmt.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 1;
 	}
 
 	@Override
 	public void delete(Publisher objectToCreate) {
-		// TODO Auto-generated method stub
-		
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
+				CallableStatement stmt = cn.prepareCall("{call usp_DeletePublisher(?)}")) {
+			int n=0;
+			stmt.setString(++n, objectToCreate.getName());
+			stmt.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	@Override
-	public Publisher load(int keyValueToLoad) {
-		// TODO Auto-generated method stub
+	public Publisher load(String keyValueToLoad) {
+		try (Connection cn = DriverManager.getConnection(connectionString, "dbclass", "test");
+				CallableStatement stmt = cn.prepareCall("{call usp_LoadPublisher(?)}")) {
+			int n=0;
+			stmt.setString(++n, keyValueToLoad);
+			ResultSet rsUser = stmt.executeQuery();
+			if (rsUser.next() ) {
+				Publisher u = new Publisher();
+				u.setName(rsUser.getString("PublisherName"));
+				u.setEmail(rsUser.getString("Email"));
+				u.setPhone(rsUser.getString("Phone"));
+				System.out.println(u);
+				return u;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -64,6 +113,11 @@ public class PublisherDao implements Dao<Publisher> {
 		}
 		System.out.println(rPublisher);
 		return rPublisher;
+	}
+	@Override
+	public Publisher load(int keyValueToLoad) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
