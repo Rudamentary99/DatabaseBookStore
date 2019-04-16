@@ -49,8 +49,8 @@ public class BookDao implements Dao<Book> {
 
 	@Override
 	public Book load(int keyValueToLoad) {
-		System.out.println("running BooDao.create()");
-
+		System.out.println("running BooDao.load()");
+		GenreDao gd = new GenreDao();
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_LoadBook(?)}")) {
 
@@ -72,9 +72,7 @@ public class BookDao implements Dao<Book> {
 				b.setDescription(rsCircuits.getString("Description"));
 				b.setCurrentPrice(rsCircuits.getDouble("CurrentPrice"));
 				b.setAmountInStock(rsCircuits.getInt("AmountInStock"));
-				System.out.println("success");
-				return b;
-
+				b.setGenres(gd.loadGenresByBook(b));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -146,7 +144,6 @@ public class BookDao implements Dao<Book> {
 
 			return stmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return -1;
@@ -163,7 +160,6 @@ public class BookDao implements Dao<Book> {
 
 			return stmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return -1;
@@ -187,9 +183,43 @@ public class BookDao implements Dao<Book> {
 
 	}
 	@Override
-	public void delete(Book objectToCreate) {
+	public int delete(Book objectToCreate) {
 		// TODO Auto-generated method stub
-
+		return -1;
 	}
+	
+	
+	public List<Book> loadBooksByGenre(String genre) {
+		System.out.println("running BooDao.loadBooksByGenre()");
+
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
+				CallableStatement stmt = cn.prepareCall("{call usp_LoadBooksByGenre(?)}")) {
+
+			int n = 0;
+			stmt.setString(++n, genre);
+			// executeQuery I expect something//execute I don't expect
+			// anything//executeUpdate get an idea of how many where changed
+			ResultSet rsCircuits = stmt.executeQuery();
+			List<Book> books = new ArrayList<>();
+			while (rsCircuits.next()) {
+					Book b = new Book();
+					b.setBookID(rsCircuits.getInt("BookID"));
+					b.setTitle(rsCircuits.getString("Title"));
+					b.setAuthorName(rsCircuits.getString("AuthorName"));
+					b.setEdition(rsCircuits.getInt("Edition"));
+					b.setPublisherID(rsCircuits.getInt("PublisherID"));
+					b.setCurrentPrice(rsCircuits.getDouble("CurrentPrice"));
+					b.setAmountInStock(rsCircuits.getInt("AmountInStock"));
+					books.add(b);
+			}
+			return books;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	
 
 }

@@ -19,77 +19,28 @@ public class PublisherDao implements Dao<Publisher> {
 	}
 	@Override
 	public Publisher create(Publisher objectToCreate) {
-		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
-				CallableStatement stmt = cn.prepareCall("{call usp_CreatePublisher(?,?,?)}")) {
-			int n = 0;
-			stmt.setString(++n, objectToCreate.getName());
-			stmt.setString(++n, objectToCreate.getEmail());
-			stmt.setString(++n, objectToCreate.getPhone());
-			
-			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				objectToCreate.setName(rs.getString("PublisherName"));
-				objectToCreate.setEmail(rs.getString("Email"));
-				objectToCreate.setPhone(rs.getString("Phone"));
-				return objectToCreate;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public int update(Publisher objectToCreate) {
-		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
-				CallableStatement stmt = cn.prepareCall("{call usp_UpdatePhone(?,?)}")) {
-			int n = 0;
-			stmt.setString(++n, objectToCreate.getName());
-			stmt.setString(++n, objectToCreate.getEmail());
-			stmt.setString(++n, objectToCreate.getPhone());
-			stmt.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 1;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
-	public void delete(Publisher objectToCreate) {
-		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
-				CallableStatement stmt = cn.prepareCall("{call usp_DeletePublisher(?)}")) {
-			int n=0;
-			stmt.setString(++n, objectToCreate.getName());
-			stmt.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public int delete(Publisher objectToCreate) {
+		// TODO Auto-generated method stub
+	return -1; 	
 	}
 
-	public Publisher load(String keyValueToLoad) {
-		try (Connection cn = DriverManager.getConnection(connectionString, "dbclass", "test");
-				CallableStatement stmt = cn.prepareCall("{call usp_LoadPublisher(?)}")) {
-			int n=0;
-			stmt.setString(++n, keyValueToLoad);
-			ResultSet rsUser = stmt.executeQuery();
-			if (rsUser.next() ) {
-				Publisher u = new Publisher();
-				u.setName(rsUser.getString("PublisherName"));
-				u.setEmail(rsUser.getString("Email"));
-				u.setPhone(rsUser.getString("Phone"));
-				System.out.println(u);
-				return u;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	@Override
+	public Publisher load(int keyValueToLoad) {
+		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public List<Publisher> loadAll() {
 		System.out.println("initializing PublisherDao.loadAll()");
@@ -114,10 +65,35 @@ public class PublisherDao implements Dao<Publisher> {
 		System.out.println(rPublisher);
 		return rPublisher;
 	}
-	@Override
-	public Publisher load(int keyValueToLoad) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public List<Address> loadPublisherAddresses(int pubID) {
+		System.out.println("running PublisherDao.loadPublisherAddresses()");
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
+				CallableStatement stmt = cn.prepareCall("{call usp_LoadPublisherAddresses(?)}")) {
+			int n = 0;
+			stmt.setInt(++n, pubID);
+			// executeQuery I expect something//execute I don't expect
+			// anything//executeUpdate get an idea of how many where changed
+			ResultSet rsUserAddress = stmt.executeQuery();
+			List<Address> as = new ArrayList<>();
+			while (rsUserAddress.next()) {
+				Address a = new Address();
+				a.setAddressID(rsUserAddress.getInt("AddressID"));
+				a.setStreet(rsUserAddress.getString("Street"));
+				a.setCity(rsUserAddress.getString("City"));
+				a.setState(rsUserAddress.getString("State"));
+				a.setZip(rsUserAddress.getString("Zip"));
+				as.add(a);
 
+			}
+			System.out.println("pub Adresses loaded");
+			return as;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("pub has no Addresses");
+		return null;
+		
+		
+		
+	}
 }

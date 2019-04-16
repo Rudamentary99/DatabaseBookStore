@@ -163,12 +163,12 @@
 							<button type="submit">Add To Cart</button>
 						</form>
 					<%if (u != null && u.getFirstName() != null && u.isAdmin()) { %>
-						<form action = "../CreateBook" method="post">
+						<form action =<%= request.getContextPath() + "/CreateBook" %> method="post">
 							<input type="hidden" name="action" value="editItem">
 							<input type="hidden" name="id" value=<%= "\"" + request.getParameter("id") + "\"" %>>
 							<button type="submit">Edit</button>
 						</form>
-						<form action="../CreateBook" method="post">
+						<form action=<%= request.getContextPath() + "/CreateBook" %> method="post">
 							<input type="hidden" name="action" value="editPhotoByte">
 							<input type="hidden" name="id" value=<%= "\"" + request.getParameter("id") + "\"" %>>
 							<button type="submit">Edit Foley</button>

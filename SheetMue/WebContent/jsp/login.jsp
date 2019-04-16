@@ -12,7 +12,7 @@
 
 <title>Sheet μ | Login</title>
 
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href=<%= request.getContextPath() + "/css/style.css" %>>
 <meta id="wixMobileViewport" name="viewport"
 	content="width=980, user-scalable=yes" />
 <link rel="stylesheet"
@@ -56,7 +56,7 @@
 	<br>
 	<div style="padding-left: 16px">
 		
-		Don't have account? <a href="../HTML/create.html">Create Account</a>
+		Don't have account? <a href=<%= request.getContextPath() + "/jsp/CreateUser.jsp" %>>Create Account</a>
 		<% 
 		mStyle = (String) request.getAttribute("style");
 		mMessage = (String) request.getAttribute("message");
@@ -66,7 +66,7 @@
 		}
 		%>
 		<h1 style=<%= "\"" + mStyle + "\"" %>><%= mMessage %></h1>
-		<form method="post" action="../UserServlet">
+		<form method="post" action=<%= "\"" + request.getContextPath() + "/UserServlet" + "\"" %>>
 			<input type="hidden" name="action" value="login"> Enter your
 			email and password<br> <br> Email address: <input
 				type="text" placeholder="johndoe@whatever.com" name="inputEmail"

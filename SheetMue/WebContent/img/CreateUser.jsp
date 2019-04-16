@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 	<%@page import="model.User" %>
 <!doctype html>
 
@@ -25,7 +25,7 @@
 	
 
 	<div class="topnav">
-		<a class="active" href=<%= request.getContextPath() + "/jsp/index.jsp" %>>Home</a> <a href="shop.html">Shop</a> 
+		<a href="index.jsp">Home</a> <a href="shop.html">Shop</a> 
 		<%!String mStyle;
 	String mMessage;
 	
@@ -43,20 +43,13 @@
 		<a
 			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
 		<div class="search-container">
-			<form action=<%= request.getContextPath() + "/jsp/search.jsp" %>>
-			
+			<form action="search.jsp">
 				<%
 					if (u != null && u.getFirstName() != null) {
-						if(u.isAdmin()) {
-							
-						
-				%>
-				<a href=<%= request.getContextPath() + "/jsp/Admin.jsp" %>>Admin</a> <%
-				} %>
-				<a href=<%= request.getContextPath() + "/jsp/user.jsp" %>><%= u.getFirstName() %></a> <%
+				%><a href=<%= request.getContextPath() + "/jsp/user.jsp" %>><%= u.getFirstName() %></a> <%
 				} else {
 				%>
-				<a href=<%= request.getContextPath() + "/jsp/login.jsp" %>>Login</a>
+				<a class="active" href=<%= request.getContextPath() + "/jsp/login.jsp" %>>Login</a>
 				<%}%>
 				 <input type="text"
 					placeholder="Search.." name="search">
@@ -67,18 +60,27 @@
 		</div>
 	</div>
 
-
-
-	<div style="padding-left: 16px">
-		<h2>Welcome to Sheet μ</h2>
-		<h3>The Sheet Music Store for the Modern Age</h3>
-		<p>All of our sheet music is provided by your favorite artists,
-			including independent artists.</p>
-		<p>Browse around and see if you find something you like!</p>
-	</div>
+<br>
+<div style="padding-left:16px">
+  Create an account<br><br>
+  <form action=<%= request.getContextPath() + "/UserServlet" %> method="post"> 
+  <input type="hidden" name="action" value="createUser">
+  First Name:
+  <input type="text" placeholder="John" name="firstname" required>
+  <br><br>
+  Last Name:
+  <input type="text" placeholder="Doe" name="lastname" required><br><br>
+  Email address: <input type="text" placeholder="johndoe@whatever.com" name="email" required><br><br>
+  Phone Number (optional): <input type="text" placeholder="111-111-1111" name="phone"><br><br>
+  Date of Birth: <input type="date" placeholder="4-1-19" name="DOB" required><br><br>
+  Password: <input type="text" placeholder="Shh" name="password" required><br><br>
+  Confirm Password: <input type="text" placeholder="Shh" name="confirmPassword" required><br><br>
+  <button type="submit">Create Account</button>
+  </form>
+</div>
 
 </body>
-		</html>
-	</header>
+</html>
+</header>
 </body>
 </html>

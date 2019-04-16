@@ -32,14 +32,6 @@ public class User {
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
-	
-	public final String getEmail2() {
-		return email2;
-	}
-
-	public final void setEmail2(String email2) {
-		this.email2 = email2;
-	}
 
 	public String getFirstName() {
 		return firstName;
@@ -64,6 +56,7 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 
 	public String getPhone() {
 		return phone;
@@ -106,11 +99,7 @@ public class User {
 	}
 
 	public void setPassword(String pPassword) {
-		if (!pPassword.equals("")) {
-
-			HashVal tater = new HashVal();
-			password = tater.hashValue(pPassword).toString();
-		}
+		this.password = pPassword;
 	}
 
 	public String getPassword() {

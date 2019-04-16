@@ -8,6 +8,7 @@ public class HashVal {
 	private final BigInteger golden = BigInteger.valueOf((long) (Math.pow(2, 64) / 1.61803398875));
 
 	public BigInteger hashValue(String pString) {
+		System.out.println("Hashing");
 		String string = pString;
 		for (int i = 0; i < string.length(); i++) {
 			int letter = string.charAt(i);

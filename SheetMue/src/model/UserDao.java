@@ -6,9 +6,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
-public class UserDao implements Dao<User>{
+public class UserDao implements Dao<User> {
 	public UserDao() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -17,10 +18,12 @@ public class UserDao implements Dao<User>{
 			e.printStackTrace();
 		}
 	}
+
 	@Override
 	public User create(User objectToCreate) {
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_CreateUser(?,?,?,?,?,?,?,?)}")) {
+			System.out.println("running UserDao.create()");
 			int n = 0;
 			stmt.setString(++n, objectToCreate.getFirstName());
 			stmt.setString(++n, objectToCreate.getLastName());
@@ -28,101 +31,34 @@ public class UserDao implements Dao<User>{
 			stmt.setString(++n, objectToCreate.getPassword());
 			stmt.setString(++n, objectToCreate.getPhone());
 			stmt.setDate(++n, objectToCreate.getDate_of_birth());
-			stmt.setDate(++n, objectToCreate.getCreated_at());
+			stmt.setDate(++n, java.sql.Date.valueOf(LocalDate.now()));
 			stmt.setBoolean(++n, objectToCreate.isAdmin());
-			
+
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
+				System.out.println("success " + objectToCreate);
 				objectToCreate.setUserID(rs.getInt("UserID"));
-				objectToCreate.setFirstName(rs.getString("FirstName"));
-				objectToCreate.setLastName(rs.getString("LastName"));
-				objectToCreate.setEmail(rs.getString("Email"));
-				objectToCreate.setPassword(rs.getString("Password"));
-				objectToCreate.setPhone(rs.getString("Phone"));
-				objectToCreate.setDate_of_birth(rs.getDate("DateOfBirth"));
-				objectToCreate.setCreated_at(rs.getDate("CreatedAt"));
-				objectToCreate.setAdmin(rs.getBoolean("IsAdmin"));
 				return objectToCreate;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("failure");
 		return null;
 	}
 
-	
 	public User updateEmail(User objectToUpdate) {
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
-				CallableStatement stmt = cn.prepareCall("{call usp_UpdateEmail(?,?)}")) {
-			int n = 0;
-			stmt.setString(++n, objectToUpdate.getEmail());
-			stmt.setString(++n, objectToUpdate.getEmail2());
-			stmt.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public void updatePhone(User objectToUpdate) {
-		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
-				CallableStatement stmt = cn.prepareCall("{call usp_UpdatePhone(?,?)}")) {
-			int n = 0;
-			stmt.setString(++n, objectToUpdate.getPhone());
-			stmt.setString(++n, objectToUpdate.getEmail());
-			stmt.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public void updatePassword(User objectToUpdate) {
-		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
-				CallableStatement stmt = cn.prepareCall("{call usp_UpdatePhone(?,?)}")) {
+				CallableStatement stmt = cn.prepareCall("{call usp_UpdateEmail(?,?,?)}")) {
 			int n = 0;
 			stmt.setString(++n, objectToUpdate.getEmail());
 			stmt.setString(++n, objectToUpdate.getPassword());
-			stmt.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public void delete(User objectToCreate) {
-		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
-				CallableStatement stmt = cn.prepareCall("{call usp_DeleteUser(?)}")) {
-			int n=0;
-			stmt.setString(++n, objectToCreate.getEmail());
-			stmt.execute();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
-	public User load(String keyValueToLoad) {
-		try (Connection cn = DriverManager.getConnection(connectionString, "dbclass", "test");
-				CallableStatement stmt = cn.prepareCall("{call usp_LoadUser(?)}")) {
-			int n=0;
-			stmt.setString(++n, keyValueToLoad);
-			ResultSet rsUser = stmt.executeQuery();
-			if (rsUser.next() ) {
-				User u = new User();
-				u.setUserID(rsUser.getInt("UserID"));
-				u.setFirstName(rsUser.getString("FirstName"));
-				u.setLastName(rsUser.getString("LastName"));
-				u.setEmail(rsUser.getString("Email"));
-				u.setPhone(rsUser.getString("Phone"));
-				u.setDate_of_birth(rsUser.getDate("DateOfBirth"));
-				u.setCreated_at(rsUser.getDate("CreatedAt"));
-				u.setAdmin(rsUser.getBoolean("IsAdmin"));
-				System.out.println(u);
-				return u;
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				objectToUpdate.setEmail(rs.getString("Email2"));
+				return objectToUpdate;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -131,13 +67,45 @@ public class UserDao implements Dao<User>{
 		return null;
 	}
 
-	public User loginUser(String pEmail, String pPassword ) {
+	public User updatePhone(User objectToUpdate) {
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
+				CallableStatement stmt = cn.prepareCall("{call usp_UpdatePhone(?,?,?)}")) {
+			int n = 0;
+			stmt.setString(++n, objectToUpdate.getEmail());
+			stmt.setString(++n, objectToUpdate.getPhone());
+			stmt.setString(++n, objectToUpdate.getPassword());
+
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				objectToUpdate.setPhone(rs.getString("Phone"));
+				return objectToUpdate;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public int delete(User objectToCreate) {
+		// TODO Auto-generated method stub
+		return -1;
+	}
+
+	@Override
+	public User load(int keyValueToLoad) {
+
+		return null;
+	}
+
+	public User loginUser(String pEmail, String pPassword) {
 		System.out.println("running loginUser");
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_LoginUser(?, ?)}")) {
 			int n = 0;
 			stmt.setString(++n, pEmail);
-			//stmt.setString(++n, pPassword);
+			// stmt.setString(++n, pPassword);
 			stmt.setString(++n, pPassword);
 
 			// executeQuery I expect something//execute I don't expect
@@ -156,7 +124,7 @@ public class UserDao implements Dao<User>{
 				u.setAdmin(rsCircuits.getBoolean("IsAdmin"));
 				System.out.println(u);
 				return u;
-				
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -165,19 +133,41 @@ public class UserDao implements Dao<User>{
 		System.out.println("no match");
 		return null;
 	}
+
+	public boolean updatePassword(int userID, String currentPassword, String newPassword) {
+		System.out.println("running UserDao.updatePassword()");
+		HashVal hash = new HashVal();
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
+				CallableStatement stmt = cn.prepareCall("{call usp_UpdatePassword(?,?,?)}")) {
+			int n = 0;
+			stmt.setInt(++n, userID);
+			stmt.setString(++n, hash.hashValue(currentPassword).toString());
+			stmt.setString(++n, hash.hashValue(newPassword).toString());
+
+			int rs = stmt.executeUpdate();
+			if (rs > 0) {
+				System.out.println("Password Updated");
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("password failed");
+		return false;
+
+	}
+
 	@Override
 	public List<User> loadAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	@Override
 	public int update(User objectToCreate) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	@Override
-	public User load(int keyValueToLoad) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 }

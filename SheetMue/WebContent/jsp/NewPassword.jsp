@@ -59,54 +59,21 @@
 		</div>
 	</div>
 		<br>
-		<%!String read = "readonly";
-			String pAction = "editInfo";
-			String bName = "edit";
-			%>
-		<% 
-		if (request.getAttribute("edit") != null) {
-			read = "";
-			pAction = "saveInfo";
-			bName ="Save Changes";
-		}
-	%>
-		<div style="padding-left: 16px">
-			Personal Information:<br> <br>
-			<form action="../UserServlet" method="post">
-				<input type="hidden" name="action" value=<%= pAction %>> Name:<input
-					type="text" name="fname"
-					value=<%= "\"" + u.getFirstName() + "\"" + read%>>
-					<input
-					type="text" name="lname"
-					value=<%= "\"" + u.getLastName() + "\"" + read%>><br>
-				Email:<input type="text" name="email"
-					value=<%= "\"" + u.getEmail() + "\"" + read%>><br>
-				Phone:<input type="text" name="phone" maxlength="10"
-					value=<% if(u.getPhone() != null) {
-							out.print("\"" + u.getPhone() +"\"");
-						} else {
-							out.print("\"\"");
-						}
-						out.print(read);
-	%>><br>
-				<button type="submit"><%= bName %></button>
-			</form>			
-				<%
-					if (bName.equals("Save Changes")){
+		<%
+			if (request.getAttribute("message") != null) {
 				%>
-				<form action="../UserServlet" method="post">
-					<input type="hidden" name="action" value="discardChanges">
-					<button type="submit">discard Changes</button>
-				</form>	
-				<%} %><br><br>
-				
-				<a href="../AddressServlet?action=shippingAddressView">Shipping addresses</a><br> <a
-				href="../UserServlet?action=ccView">credit cards</a><br>
-				<a href="NewPassword.jsp">change Password</a> <br><br>
-				<form action=></form>
+				<h3 style="color:red"><%= (String)request.getAttribute("message") %></h3>
+				<%
+			}
+		%>
+		
+		<form action=<%= "\"" + request.getContextPath() + "/UserServlet"  + "\"" %> method="post">
+		<input type="hidden" name="action" value="newPassword">
+		Current Password: <input type="password" name="currentPass" required><br>
+		New Password: <input type="password" name="newPass" required><br>
+		Confirm New Password: <input type="password" name="confirmPass" required><br>
+		<button type="submit">Save</button>
+		</form>
 
-		</div>
-
-	</header>
 </body>
 </html>

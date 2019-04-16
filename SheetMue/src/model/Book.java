@@ -4,19 +4,28 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.util.List;
 
 public class Book {
-	int bookID;
-	int publisherID; 
-	String authorName;
-	String title;
-	int edition;
-	Date pubDate;
-	String description;
-	Double currentPrice;
-	int amountInStock;
+	private int bookID;
+	private int publisherID; 
+	private String authorName;
+	private String title;
+	private int edition;
+	private Date pubDate;
+	private String description;
+	private Double currentPrice;
+	private int amountInStock;
+	private List<String> genres;
 	
-	
+	public List<String> getGenres() {
+		return genres;
+	}
+
+	public void setGenres(List<String> genres) {
+		this.genres = genres;
+	}
+
 	public File getImg(int pBookID) {
 		Path Img= Paths.get("/img/" + Integer.toString(pBookID));
 		return Img.toFile();
