@@ -76,57 +76,34 @@
 	
 	<%!PublisherDao pd = new PublisherDao();;
 	List<Address> pubAddresses;%>
-	<h3>Genres:</h3>
+	<h3>Publisher's Addresses:</h3>
 	<%
-	pubAddresses = pd.loadPublisherAddresses(Integer.parseInt(request.getParameter("id")));
+	
+	pubAddresses = (List<Address>) session.getAttribute("pubAddresses");
 		if (pubAddresses != null && pubAddresses.size() > 0) {
 			for (Address a : pubAddresses) {
-				if (request.getParameter("action") != null && request.getParameter("action").equals("editAddress")
-						&& a.getAddressID() == Integer.parseInt(request.getParameter("AddressId"))) {
+				
 	%>
-	<form action=<%=request.getContextPath() + "/AdminServlet"%>
-		method="post">
-		<input type="hidden" name="action" value="updateAddress">
-		<input type="hidden" name="id" value=<%= request.getParameter("id") %>>
-		<input type="hidden" name="addressId" value=<%= a.getAddressID() %>>
-		<input type="text" name="street" value=<%="\"" + a.getStreet() + "\""%>required>
-		<input type="text" name="city" value=<%="\"" + a.getCity() + "\""%>required>
-		<input type="text" name="state" value=<%="\"" + a.getState() + "\""%>required>
-		<input type="text" name="zip" value=<%="\"" + a.getZip() + "\""%>required>
-		
-		<button type=submit>Save</button>
-	</form>
-	<form action=<%=request.getContextPath() + "/jsp/PublisherAddress.jsp"%>
-		method="post">
-		<input type="hidden" name="id" value=<%= request.getParameter("id") %>>
-		<button type=submit>Discard</button>
-	</form>
-	<%
-		} else {
-	%>
+	
+
 	Street:<a><%=a.getStreet()%></a>  <br>
 	City: <a><%=a.getCity() %></a><br>
 	State: <a><%= a.getState() %></a><br>
 	Zip: <a><%= a.getZip() %></a><br>
 	
-		<form action=<%=request.getContextPath() + "/jsp/PublisherAddress.jsp"%>
-		method="post">
-		<input type="hidden" name="action" value="editAddress"> 
-		<input type="hidden" name="id" value=<%= request.getParameter("id") %>><input
-			type="hidden" name="addressId" value=<%="\"" + a.getAddressID() + "\""%>>
-		<button type=submit>edit</button>
-	</form>
 	<form action=<%=request.getContextPath() + "/AdminServlet"%>
 		method="post">
 		<input type="hidden" name="action" value="deletePubAddress"> <input
-			type="hidden" name="addressId" value=<%="\"" + a.getAddressID() + "\""%>>
+			type="hidden" name="addressID" value=<%="\"" + a.getAddressID() + "\""%>>
+			 <input
+			type="hidden" name="pubID" value=<%="\"" + request.getParameter("pubID") + "\""%>>
 		<button type=submit>Remove</button>
 	</form>
 
 
 	<%
 		}
-			}
+			
 		} else {
 	%>
 
@@ -144,11 +121,11 @@
 	<form action=<%=request.getContextPath() + "/AdminServlet"%>
 		method="post">
 		<input type="hidden" name="action" value="createPubAddress">
-		<input type="hidden" name="id">
-		<input type="text" name="street" required>
-		<input type="text" name="city" required>
-		<input type="text" name="state" required>
-		<input type="text" name="zip" required>
+		<input type="hidden" name="pubID" value=<%= "\"" + request.getParameter("pubID") + "\"" %>>
+		Street: <input type="text" name="street" required><br>
+		City: <input type="text" name="city" required><br>
+		State: <input type="text" name="state" required><br>
+		Zip: <input type="text" name="zip" required><br>
 		
 		<button type=submit>Save</button>
 	</form>

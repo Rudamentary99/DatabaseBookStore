@@ -39,7 +39,7 @@
 				
 			}
 		%>
-		<a <%=style%> href="cart.jsp">Cart</a>
+		<a <%=style%> href=<%= request.getContextPath() + "/CartServlet?action=viewCart" %>>Cart</a>
 		<a
 			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
 		<div class="search-container">

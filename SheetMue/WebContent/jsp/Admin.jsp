@@ -59,7 +59,7 @@
 		</div>
 	</div>
 		<br>
-				<a href=<%= request.getContextPath() + "/AdminServlet?action=viewPublishers" %>>Publishers</a><br><br> <a
+				<a href=<%= request.getContextPath() + "/jsp/AdminPublisher.jsp" %>>Publishers</a><br><br> <a
 				href=<%= request.getContextPath() + "/jsp/AdminGenre.jsp" %>>Genres</a><br><br>
 				<a href=<%= request.getContextPath() + "/AdminServlet?action=viewAdmins" %>>Administrators</a> <br><br>
 				
