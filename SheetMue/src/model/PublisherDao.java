@@ -65,6 +65,27 @@ public class PublisherDao implements Dao<Publisher> {
 		System.out.println(rPublisher);
 		return rPublisher;
 	}
+	public boolean createPublisherAddress(Address objectToCreate, int pubID) {
+		System.out.println("Running PublisherDao.createPublisherAddress()");
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
+				CallableStatement stmt = cn.prepareCall("{call usp_CreatePublisherAddress(?,?,?,?,?)}")) {
+			int n = 0;
+			stmt.setInt(++n, pubID);
+			stmt.setString(++n, objectToCreate.getStreet());
+			stmt.setString(++n, objectToCreate.getCity());
+			stmt.setString(++n, objectToCreate.getState());
+			stmt.setString(++n, objectToCreate.getZip());
+
+			stmt.execute();
+			System.out.println("Publihser address created");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("failured to create publisher address");
+		return false;
+	}
+
 	public List<Address> loadPublisherAddresses(int pubID) {
 		System.out.println("running PublisherDao.loadPublisherAddresses()");
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");

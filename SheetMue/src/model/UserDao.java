@@ -88,17 +88,44 @@ public class UserDao implements Dao<User> {
 	}
 
 	@Override
-	public int delete(User objectToCreate) {
-		// TODO Auto-generated method stub
-		return -1;
+	public void delete(User objectToCreate) {
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
+				CallableStatement stmt = cn.prepareCall("{call usp_DeleteUser(?)}")) {
+			int n=0;
+			stmt.setInt(++n, objectToCreate.getUserID());
+			stmt.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public User load(int keyValueToLoad) {
-
+		try (Connection cn = DriverManager.getConnection(connectionString, "dbclass", "test");
+				CallableStatement stmt = cn.prepareCall("{call usp_LoadUser(?)}")) {
+			int n=0;
+			stmt.setInt(++n, keyValueToLoad);
+			ResultSet rsUser = stmt.executeQuery();
+			if (rsUser.next() ) {
+				User u = new User();
+				u.setUserID(rsUser.getInt("UserID"));
+				u.setFirstName(rsUser.getString("FirstName"));
+				u.setLastName(rsUser.getString("LastName"));
+				u.setEmail(rsUser.getString("Email"));
+				u.setPhone(rsUser.getString("Phone"));
+				u.setDate_of_birth(rsUser.getDate("DateOfBirth"));
+				u.setCreated_at(rsUser.getDate("CreatedAt"));
+				u.setAdmin(rsUser.getBoolean("IsAdmin"));
+				System.out.println(u);
+				return u;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
-
 	public User loginUser(String pEmail, String pPassword) {
 		System.out.println("running loginUser");
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
