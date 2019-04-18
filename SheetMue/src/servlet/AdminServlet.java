@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Address;
+import model.AddressDao;
 import model.BookDao;
 import model.GenreDao;
 import model.PublisherDao;
@@ -23,6 +25,8 @@ public class AdminServlet extends HttpServlet {
 	private BookDao bd = new BookDao();
 	private GenreDao gd = new GenreDao();
 	private PublisherDao pd = new PublisherDao();
+	private AddressDao ad = new AddressDao();
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -47,13 +51,40 @@ public class AdminServlet extends HttpServlet {
 				}
 				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/jsp/AdminGenre.jsp");
 				requestDispatcher.forward(request, response);
-			} else if (action !=null && action.equals("viewPubAddress")) {
-				request.setAttribute("pubAddresses", pd.loadPublisherAddresses(Integer.parseInt(request.getParameter("pubId"))));
-				RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/jsp/PublisherAddress.jsp");
+			} else if (action != null && action.equals("createPubAddress")) {
+				Address a = new Address();
+				a.setStreet(request.getParameter("street"));
+				a.setCity(request.getParameter("city"));
+				a.setState(request.getParameter("state"));
+				a.setZip(request.getParameter("zip"));
+
+				if (pd.createPublisherAddress(a, Integer.parseInt(request.getParameter("pubID")))) {
+					request.setAttribute("createMessage", "Address Created");
+				} else {
+					request.setAttribute("createMessage", "Address Creation failed. Please try again later");
+				}
+
+				doGetPubAddress(request, response, Integer.parseInt(request.getParameter("pubID")));
+
+			} else if (action != null && action.equals("viewPubAddresses")) {
+
+				request.getSession().setAttribute("pubAddresses",
+						pd.loadPublisherAddresses(Integer.parseInt(request.getParameter("pubID"))));
+				RequestDispatcher requestDispatcher = getServletContext()
+						.getRequestDispatcher("/jsp/PublisherAddress.jsp");
 				requestDispatcher.forward(request, response);
 
+			} else if (action !=null && action.equals("deletePubAddress")) {
+				Address a = new Address();
+				a.setAddressID(Integer.parseInt(request.getParameter("addressID")));
+				if (ad.delete(a) > 0) {
+					System.out.println("address Deleted");
+					
+				}
+				
+				doGetPubAddress(request, response, Integer.parseInt(request.getParameter("pubID")));
 			}
-			
+
 			else if (action != null && action.equals("updateGenre")) {
 				int rowsUpdated = gd.update(request.getParameter("genreName"));
 				if (rowsUpdated < 1) {
@@ -79,6 +110,14 @@ public class AdminServlet extends HttpServlet {
 			RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/jsp/index.jsp");
 			requestDispatcher.forward(request, response);
 		}
+	}
+
+	private void doGetPubAddress(HttpServletRequest request, HttpServletResponse response, int pubID)
+			throws ServletException, IOException {
+		request.getSession().setAttribute("pubAddresses", pd.loadPublisherAddresses(pubID));
+
+		RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/jsp/PublisherAddress.jsp");
+		requestDispatcher.forward(request, response);
 	}
 
 	/**
