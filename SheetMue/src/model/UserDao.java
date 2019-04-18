@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao implements Dao<User> {
@@ -88,7 +89,7 @@ public class UserDao implements Dao<User> {
 	}
 
 	@Override
-	public void delete(User objectToCreate) {
+	public int delete(User objectToCreate) {
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_DeleteUser(?)}")) {
 			int n=0;
@@ -98,6 +99,7 @@ public class UserDao implements Dao<User> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return 0;
 	}
 
 	@Override
@@ -187,7 +189,37 @@ public class UserDao implements Dao<User> {
 
 	@Override
 	public List<User> loadAll() {
-		// TODO Auto-generated method stub
+		System.out.println("running UserDao.loadAll()");
+
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
+				CallableStatement stmt = cn.prepareCall("{call usp_LoadAllUsers()}")) {
+
+			int n = 0;
+
+			// executeQuery I expect something//execute I don't expect
+			// anything//executeUpdate get an idea of how many where changed
+			ResultSet rsCircuits = stmt.executeQuery();
+			List<User> users = new ArrayList<>();
+			while (rsCircuits.next()) {
+				User user = new User();
+				user.setUserID(rsCircuits.getInt("UserID"));
+				user.setFirstName(rsCircuits.getString("FirstName"));
+				user.setLastName(rsCircuits.getString("LastName"));
+				user.setPassword(rsCircuits.getString("Password"));
+				user.setEmail(rsCircuits.getString("Email"));
+				user.setPhone(rsCircuits.getString("Phone"));
+				user.setDate_of_birth(rsCircuits.getDate("DateOfBirth"));
+				user.setCreated_at(rsCircuits.getDate("CreatedAt"));
+				user.setDeteDate(rsCircuits.getDate("DeleteDate"));
+				user.setAdmin(rsCircuits.getBoolean("IsAdmin"));
+				users.add(user);
+			}
+			System.out.println(users);
+			return users;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
