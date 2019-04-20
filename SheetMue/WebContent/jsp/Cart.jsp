@@ -8,9 +8,9 @@
 <head>
 <meta charset="utf-8">
 
-<title>Sheet μ | Cart</title>
+<title>Sheet μ | Home</title>
 
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href= <%= "\"" + request.getContextPath() + "/css/style.css\"" %>>
 <meta id="wixMobileViewport" name="viewport"
 	content="width=980, user-scalable=yes" />
 <link rel="stylesheet"
@@ -20,47 +20,79 @@
 <body>
 	<header>
 		<h6>Sheet μ</h6>
+		<html>
+<body>
 
+	
+
+	<div class="topnav">
+		<a class="active" href=<%= request.getContextPath() + "/jsp/index.jsp" %>>Home</a> <a href="shop.html">Shop</a> 
+		<%!String mStyle;
+	String mMessage;
+	
+	User u = new User();
+	String style = "style=\"display:none\"";%>
+	
+		<%
+			u = (User) session.getAttribute("User");
+			if (u != null && u.getFirstName() != null) {
+				style = "";
+				
+			}
+		%>
+		<a <%=style%> href=<%= request.getContextPath() + "/CartServlet?action=viewCart" %>>Cart</a>
+		<a
+			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
+		<div class="search-container">
+			<form action=<%= request.getContextPath() + "/jsp/search.jsp" %>>
+			
+				<%
+					if (u != null && u.getFirstName() != null) {
+						if(u.isAdmin()) {
+							
+						
+				%>
+				<a href=<%= request.getContextPath() + "/jsp/Admin.jsp" %>>Admin</a> <%
+				} %>
+				<a href=<%= request.getContextPath() + "/jsp/user.jsp" %>><%= u.getFirstName() %></a> <%
+				} else {
+				%>
+				<a href=<%= request.getContextPath() + "/jsp/login.jsp" %>>Login</a>
+				<%}%>
+				 <input type="text"
+					placeholder="Search.." name="search">
+				<button type="submit">
+					<i class="fa fa-search"></i>
+				</button>
+			</form>
+		</div>
+	</div>
+
+
+		<br>
 
 		<%!ArrayList<CartItem> savedForeLater = new ArrayList<>();%>
 		<%!CartDao bd = new CartDao();%>
-		<%!User u = new User();%>
-		<%!Cart c;%>
+		<%!Cart co;%>
+		<%!Cart cs; %>
 
-
-		<div class="topnav">
-			<a href="index.html">Home</a> <a href="shop.html">Shop</a> <a
-				class="activcolor: white;e" href="cart.jsp">Cart</a> <a
-				href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
-
-			<div class="search-container">
-				<form action="search.jsp">
-					<a href="../HTML/create.html">Create Account</a><a href="login.jsp">Login</a>
-					<input type="text" placeholder="Search.." name="search">
-					<button type="submit">
-						<i class="fa fa-search"></i>
-					</button>
-				</form>
-			</div>
-		</div>
-
-		<br>
 
 
 		<div style="padding-left: 16px">
 			<form action="">
 				<button type="submit">Proceed to Checkout</button>
 			</form>
+			<h3>Cart Items:</h3>
 			<table>
 				<%
-					
-						//if cart not loaded
-						c = (Cart) session.getAttribute("Cart");
-						if (c == null) {
-							//load and save cart
+					//if cart not loaded
+					co = (Cart) session.getAttribute("CartOrder");
+					if (co != null) {
+						//load and save cart
+
 						//output cart
-						for (CartItem cI : c.getItems()) {
-							if (!cI.isSavedForLater()) {
+						for (CartItem cI : co.getItems()) {
+							
 				%>
 				<tr>
 					<th><a class="itemLink" href=href=
@@ -70,16 +102,16 @@
 					<td>$<%=cI.getCurrentPrice()%></td>
 					<td>
 						<div class="itemForms">
-							<form action="cart.jsp">
-								<input type="hidden" name="proc" id="proc" value="1"> <input
-									type="hidden" name="id" id="id"
+							<form action=<%=request.getContextPath() + "/CartServlet"%>>
+								<input type="hidden" name="action" value="saveForLater">
+								<input type="hidden" name="bookID"
 									value=<%="\"" + cI.getBookID() + "\""%>>
 
 								<button id="save" type="submit">Save For Later</button>
 							</form>
-							<form action="cart.jsp">
-								<input type="hidden" name="proc" id="proc" value="2"> <input
-									type="hidden" name="id" id="id"
+							<form action=<%=request.getContextPath() + "/CartServlet"%>>
+								<input type="hidden" name="action" value="removeFromCart">
+								<input type="hidden" name="bookID"
 									value=<%="\"" + cI.getBookID() + "\""%>>
 								<button id="remove" type="submit">X</button>
 
@@ -89,19 +121,20 @@
 
 				</tr>
 				<%
-					} else {
-								savedForeLater.add(cI);
-							}
+					
+							
 						}
 					}
 				%>
 			</table>
 			<%
-				if (savedForeLater.size() > 0) {
+				cs = (Cart) session.getAttribute("CartSave");
+			
+				if (cs != null) {
 			%>
-			<h3>Saved For Later</h3>
+			<h3>Saved For Later:</h3>
 			<%
-				for (CartItem cI : savedForeLater) {
+				for (CartItem cI : cs.getItems()) {
 			%>
 			<div class="cartItem">
 				<a
@@ -113,53 +146,26 @@
 						$<%=cI.getCurrentPrice()%></p> <br>
 
 				</a>
-					<form action="cart.jsp">
-						<input type="hidden" name="proc" id="proc" value="3"> <input
-							type="hidden" name="id" id="id"
-							value=<%="\"" + cI.getBookID() + "\""%>>
+				<form action=<%=request.getContextPath() + "/CartServlet"%> method="post">
+					<input type="hidden" name="action" value="addToOrder"> <input
+						type="hidden" name="bookID"
+						value=<%="\"" + cI.getBookID() + "\""%>>
 
-						<button id="add" type="submit">Add To Order</button>
-					</form>
-					<form action="cart.jsp">
-						<input type="hidden" name="proc" id="proc" value="2"> <input
-							type="hidden" name="id" id="id"
-							value=<%="\"" + cI.getBookID() + "\""%>>
-						<button id="remove" type="submit">X</button>
+					<button id="add" type="submit">Add To Order</button>
+				</form>
+				<form action=<%=request.getContextPath() + "/CartServlet"%> method="post">
+					<input type="hidden" name="action" value="removeFromCart">
+					<input type="hidden" name="bookID"	value=<%="\"" + cI.getBookID() + "\""%>>
+					<button id="remove" type="submit">X</button>
 
-					</form>
-				</div>
+				</form>
+			</div>
 			<%
 				}
 				}
 			%>
 		</div>
-		<%!String proc;%>
-		<%!int r;%>
-		<%
-			proc = request.getParameter("proc");
-
-			if (proc != null) {
-				if (proc.equals("1")) {
-					//save for later
-					r = bd.update(u.getUserID(), new CartItem(Integer.parseInt(request.getParameter("id")), true));
-					//reload cart
-					session.removeAttribute("Cart");
-					response.sendRedirect("cart.jsp");
-
-				} else if (proc.equals("3")) {
-					//add to order
-					r = bd.update(u.getUserID(), new CartItem(Integer.parseInt(request.getParameter("id")), false));
-					//reload cart
-					session.removeAttribute("Cart");
-					savedForeLater.clear();
-					response.sendRedirect("cart.jsp");
-
-				} else {
-					//remove from cart
-
-				}
-			}
-		%>
+		
 
 		<%!public String makeParameter(final String x) {
 		final char SPACE = ' ';

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@page import="model.User, model.BookDao, model.SearchBook,java.util.ArrayList" %>
+	<%@page import="model.User, model.Book, model.BookDao, java.util.List" %>
 <!doctype html>
 
 <html lang="en">
@@ -22,9 +22,7 @@
 		<html>
 <body>
 
-	
-
-	<div class="topnav">
+		<div class="topnav">
 		<a class="active" href=<%= request.getContextPath() + "/jsp/index.jsp" %>>Home</a> <a href="shop.html">Shop</a> 
 		<%!String mStyle;
 	String mMessage;
@@ -39,14 +37,21 @@
 				
 			}
 		%>
-		<a <%=style%> href="cart.jsp">Cart</a>
+		<a <%=style%> href=<%= request.getContextPath() + "/CartServlet?action=viewCart" %>>Cart</a>
 		<a
 			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
 		<div class="search-container">
-			<form action=<%= request.getContextPath() + "/jsp/search.jsp" %>>
+			<form action=<%= request.getContextPath() + "/BookServlet" %> method="post">
+				<input type="hidden" name="action" value="searchBooks">
 				<%
 					if (u != null && u.getFirstName() != null) {
-				%><a href=<%= request.getContextPath() + "/jsp/user.jsp" %>><%= u.getFirstName() %></a> <%
+						if(u.isAdmin()) {
+							
+						
+				%>
+				<a href=<%= request.getContextPath() + "/jsp/Admin.jsp" %>>Admin</a> <%
+				} %>
+				<a href=<%= request.getContextPath() + "/jsp/user.jsp" %>><%= u.getFirstName() %></a> <%
 				} else {
 				%>
 				<a href=<%= request.getContextPath() + "/jsp/login.jsp" %>>Login</a>
@@ -59,27 +64,26 @@
 			</form>
 		</div>
 	</div>
-<%! ArrayList<SearchBook> searchBooks;
 
-BookDao bd = new BookDao();%>
+<%! List<Book> books;
+	int i =0; 
+	%>
 
 	<%
-		searchBooks = bd.Search(request.getParameter("search"));
-		if (searchBooks != null) {
+		books = (List<Book>) session.getAttribute("SearchItems");
+		if (books != null) {
 
 
-			for (SearchBook b : searchBooks) {
+			for (Book b : books) {
 	%>
 
 
 	<form action=<%= request.getContextPath() + "/jsp/item.jsp" %> method="post">
-		<input type="hidden" value="action" value="viewItem"> <input
-			type="hidden" name="id" value=<%="\"" + b.getBookID() + "\""%>> <input
-			type="hidden" name="title" value=<%="\"" + b.getTitle() + "\""%>> <input
-			type="hidden" name="description" value=<%="\"" + b.getDescription() + "\""%>> <input
-			type="hidden" name="price" value=<%="\"" + b.getCurrentPrice() + "\""%>> <input
-			type="hidden" name="stockAmount" value=<%="\"" + b.getAmountInStock() + "\""%>>
-		<button type="submit"><%=b.getTitle() + "   " + b.getCurrentPrice()%></button>
+		<input type="hidden" value="action" value="viewItem"> <input type="hidden" name="index"
+		value=<%= i++ %>>
+		<button type="submit"><img src=<%= request.getContextPath() + "/img/" + Integer.toString(b.getBookID()) + ".png" %> style="width: 300px; height: 400px;">
+		
+		<%=b.getTitle() + "   " + b.getCurrentPrice()%></button>
 
 	</form>
 	<br>

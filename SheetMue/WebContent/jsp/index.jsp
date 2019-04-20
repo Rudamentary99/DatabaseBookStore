@@ -43,8 +43,8 @@
 		<a
 			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
 		<div class="search-container">
-			<form action=<%= request.getContextPath() + "/jsp/search.jsp" %>>
-			
+			<form action=<%= request.getContextPath() + "/BookServlet" %> method="post">
+				<input type="hidden" name="action" value="searchBooks">
 				<%
 					if (u != null && u.getFirstName() != null) {
 						if(u.isAdmin()) {
