@@ -82,7 +82,7 @@ public class BookDao implements Dao<Book> {
 		return null;
 	}
 
-	public ArrayList<SearchBook> Search(String query) {
+	public ArrayList<Book> search(String query) {
 
 		System.out.println("initializing book.search");
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
@@ -94,10 +94,10 @@ public class BookDao implements Dao<Book> {
 			// executeQuery I expect something//execute I don't expect
 			// anything//executeUpdate get an idea of how many where changed
 			ResultSet rsCircuits = stmt.executeQuery();
-			ArrayList<SearchBook> books = new ArrayList<>();
+			ArrayList<Book> books = new ArrayList<>();
 			int i = 0;
 			while (rsCircuits.next()) {
-				SearchBook b = new SearchBook();
+				Book b = new Book();
 				b.setBookID(rsCircuits.getInt("BookID"));
 				b.setPublisherID(rsCircuits.getInt("PublisherID"));
 				b.setAuthorName(rsCircuits.getString("AuthorName"));
@@ -107,7 +107,6 @@ public class BookDao implements Dao<Book> {
 				b.setDescription(rsCircuits.getString("Description"));
 				b.setCurrentPrice(rsCircuits.getDouble("CurrentPrice"));
 				b.setAmountInStock(rsCircuits.getInt("AmountInStock"));
-				b.setIndex(i++);
 				books.add(b);
 				
 			}

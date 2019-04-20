@@ -42,7 +42,7 @@ public class CartDao {
 	}
 
 	public int update(int pUserID, CartItem c) {
-		System.out.println("initializing BookDao.updateCart()");
+		System.out.println("initializing CartDao.updateCart()");
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_UpdateCart(?,?,?)}")) {
 			int n = 0;
@@ -60,13 +60,29 @@ public class CartDao {
 
 	}
 
-	public void delete(CartItem objectToCreate) {
-		// TODO Auto-generated method stub
+	public int delete(int userID, CartItem c) {
+		System.out.println("running CartDao.delete()");
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
+				CallableStatement stmt = cn.prepareCall("{call usp_DeleteCartITem(?,?)}")) {
+			int n = 0;
+			stmt.setInt(++n, userID);
+			stmt.setInt(++n, c.getBookID());
 
+			// executeQuery I expect something//execute I don't expect
+			// anything//executeUpdate get an idea of how many where changed
+
+			int rowsDeleted = stmt.executeUpdate();
+			System.out.println("RowsDeleted:  " + rowsDeleted);
+			return rowsDeleted;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("CartDao.delete() failed");
+		return -1;
 	}
 
 	public Cart load(int userID) {
-		System.out.println("initializing book.loadCart");
+		System.out.println("initializing CartDao.loadCart");
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_LoadCart(?)}")) {
 
@@ -92,7 +108,7 @@ public class CartDao {
 				b.setSavedForLater(rsCircuits.getBoolean("SavedForLater"));
 				cIs.add(b);
 			}
-			System.out.println("search result: " + cIs);
+			System.out.println("CartItems: " + cIs);
 			return new Cart(cIs);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
