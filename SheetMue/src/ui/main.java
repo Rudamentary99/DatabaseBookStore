@@ -15,7 +15,7 @@ public class main {
 		System.out.println( b.getTitle());
 		System.out.println( b.getCurrentPrice());
 		
-		for(Book book: bd.Search("college book")) {
+		for(Book book: bd.search("college book")) {
 			System.out.println(book);
 		}
 	}
