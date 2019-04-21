@@ -106,4 +106,12 @@ public class User {
 		return password;
 	}
 
+	public String getEmail2() {
+		return email2;
+	}
+	
+	public void setEmail2(String pEmail2) {
+		this.email2 = pEmail2;
+	}
+
 }

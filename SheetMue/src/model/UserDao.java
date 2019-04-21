@@ -51,10 +51,10 @@ public class UserDao implements Dao<User> {
 
 	public User updateEmail(User objectToUpdate) {
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
-				CallableStatement stmt = cn.prepareCall("{call usp_UpdateEmail(?,?,?)}")) {
+				CallableStatement stmt = cn.prepareCall("{call usp_UpdateEmail(?,?)}")) {
 			int n = 0;
 			stmt.setString(++n, objectToUpdate.getEmail());
-			stmt.setString(++n, objectToUpdate.getPassword());
+			stmt.setString(++n, objectToUpdate.getEmail2());
 
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -70,11 +70,10 @@ public class UserDao implements Dao<User> {
 
 	public User updatePhone(User objectToUpdate) {
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
-				CallableStatement stmt = cn.prepareCall("{call usp_UpdatePhone(?,?,?)}")) {
+				CallableStatement stmt = cn.prepareCall("{call usp_UpdatePhone(?,?)}")) {
 			int n = 0;
 			stmt.setString(++n, objectToUpdate.getEmail());
 			stmt.setString(++n, objectToUpdate.getPhone());
-			stmt.setString(++n, objectToUpdate.getPassword());
 
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -93,7 +92,7 @@ public class UserDao implements Dao<User> {
 		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_DeleteUser(?)}")) {
 			int n=0;
-			stmt.setInt(++n, objectToCreate.getUserID());
+			stmt.setString(++n, objectToCreate.getEmail());
 			stmt.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -102,12 +101,11 @@ public class UserDao implements Dao<User> {
 		return 0;
 	}
 
-	@Override
-	public User load(int keyValueToLoad) {
-		try (Connection cn = DriverManager.getConnection(connectionString, "dbclass", "test");
+	public User load(String keyValueToLoad) {
+		try (Connection cn = DriverManager.getConnection(connectionString, "nathanandnoahapp", "timAvengers18");
 				CallableStatement stmt = cn.prepareCall("{call usp_LoadUser(?)}")) {
 			int n=0;
-			stmt.setInt(++n, keyValueToLoad);
+			stmt.setString(++n, keyValueToLoad);
 			ResultSet rsUser = stmt.executeQuery();
 			if (rsUser.next() ) {
 				User u = new User();
@@ -227,6 +225,12 @@ public class UserDao implements Dao<User> {
 	public int update(User objectToCreate) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public User load(int keyValueToLoad) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
