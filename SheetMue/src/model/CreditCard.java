@@ -1,31 +1,26 @@
 package model;
 
 public class CreditCard {
-	private int ccn;
-	private int ccv;
-	private int exp;
+	private String ccn;
+	private String ccv;
+	private String exp;
 	
-	public final int getCcv() {
-		return ccv;
-	}
-
-	public final void setCcv(int ccv) {
-		this.ccv = ccv;
-	}
-
-	public final int getCcn() {
+	public final String getCcn() {
 		return ccn;
 	}
-
-	public final void setCcn(int ccn) {
+	public final void setCcn(String ccn) {
 		this.ccn = ccn;
 	}
-
-	public final int getExp() {
+	public final String getCcv() {
+		return ccv;
+	}
+	public final void setCcv(String ccv) {
+		this.ccv = ccv;
+	}
+	public final String getExp() {
 		return exp;
 	}
-
-	public final void setExp(int exp) {
+	public final void setExp(String exp) {
 		this.exp = exp;
 	}
 }
