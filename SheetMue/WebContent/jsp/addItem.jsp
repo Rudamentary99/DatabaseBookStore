@@ -41,8 +41,8 @@
 	boolean selectGenres= false;
 	%>
 	<div class="topnav">
-		<a href="index.html">Home</a> <a href="shop.html">Shop</a> <a
-			href="cart.html">Cart</a> <a href="about.html">About</a> <a
+		<a href="index.jsp">Home</a> <a href="Shop.jsp">Shop</a> <a
+			href="cart.jsp">Cart</a> <a href="about.html">About</a> <a
 			href="contact.html">Contact</a>
 
 		<div class="search-container">
@@ -58,8 +58,9 @@
 	</div>
 	<br>
 	<%
-		b = (Book) request.getAttribute("EditItem");
+		b = (Book) request.getAttribute("editItem");
 		if (b != null && b.getTitle() != null) {
+		
 			action = "saveEdit";
 			vId = val + b.getBookID();
 			vTitle = val + b.getTitle();
@@ -77,8 +78,7 @@
 
 	<div style="padding-left: 16px">
 		Create a Book<br> <br>
-		<form action="../CreateBook" method="post">
-
+		<form action=<%= request.getContextPath() + "/AdminServlet" %> >
 			<input type="hidden" name="action" value=<%=action%>> <input
 				type="hidden" name="id" value=<%=vId%>>
 				 Publisher:
@@ -104,12 +104,12 @@
 				type="date" name="pubDate" id="pubDate" <%=vPubDate%> required><br>
 			<br> Description: <input type="text" placeholder="Description"
 				name="description" id="description" <%=vDescription%> required><br>
-			<br> Genres (ctrl for multiple): <select name="Genres" multiple>
+			<br> Genres (ctrl for multiple): <select name="genres" multiple>
 				<%
 						
 					for (String genre : gd.loadAll()){
 						select="";
-						if (selectGenres && b.getGenres().contains(genre)) {
+						if (selectGenres && b.getGenres() != null && b.getGenres().contains(genre)) {
 							select="selected";
 						}
 						%>
@@ -121,9 +121,7 @@
 				
 			</select><a href=<%= request.getContextPath() + "/jsp/CreateGenre" %>>create genre</a><br>  <br> Price: <input type="number" step=".01"
 				placeholder="Price" name="currentPrice" id="currentPrice"
-				<%=vCurrentPrice%> required><br> <br> Amount in
-			Stock: <input type="number" step="1" placeholder="Stock"
-				name="amountInStock" id="amountInStock" <%=vStockAmount%> required><br>
+				<%=vCurrentPrice%> required><br>
 			<button type="submit">Submit</button>
 
 			<br>

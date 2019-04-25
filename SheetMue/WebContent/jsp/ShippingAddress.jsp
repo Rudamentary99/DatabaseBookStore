@@ -25,7 +25,7 @@
 
 
 		<div class="topnav">
-		<a  href="index.jsp">Home</a> <a href="shop.html">Shop</a> <a
+		<a  href="index.jsp">Home</a> <a href="shop.jsp">Shop</a> <a
 			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
 		<%!String mStyle;
 	String mMessage;

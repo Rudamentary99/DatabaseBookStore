@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ page import="model.Book, model.BookDao, model.User" %>
-<!DOCTYPE html>
+	pageEncoding="UTF-8"%>
+	<%@page import="model.User, model.Book, java.util.List" %>
+<!doctype html>
 
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+<meta charset="utf-8">
 
-  <title>Sheet μ | Administrator Settings</title>
+<title>Sheet μ | Home</title>
 
 <link rel="stylesheet" href= <%= "\"" + request.getContextPath() + "/css/style.css\"" %>>
 <meta id="wixMobileViewport" name="viewport"
@@ -25,7 +25,8 @@
 	
 
 	<div class="topnav">
-		<a class="active" href=<%= request.getContextPath() + "/jsp/index.jsp" %>>Home</a> <a href="shop.jsp">Shop</a> 
+		<a href=<%= request.getContextPath() + "/jsp/index.jsp" %>>Home</a> 
+		<a class="active" href=<%= request.getContextPath() + "/BookServlet?action=shopByCategory" %>>Shop</a> 
 		<%!String mStyle;
 	String mMessage;
 	
@@ -66,35 +67,47 @@
 			</form>
 		</div>
 	</div>
-<br>
+
 <%!
-Book b; 
-	String action;
-	int editBookID;
+	List<Book> genreBooks;
+	String genre;
+	int i = 0;
 %>
 <%
-
-	b = (Book)request.getAttribute("editBookID");
-	 if (b != null) {
-		editBookID = b.getBookID();
-	 } else if(request.getParameter("bookID") != null) {
-		editBookID = Integer.parseInt(request.getParameter("bookID"));
-	} else {
-		response.sendRedirect("/jsp/index.jsp");
-	}
-
-%>
-<div style="padding-left:16px">
-  Upload Musics stock photo<br><br>
 	
-<form action=<%= request.getContextPath() + "/AdminServlet?action=saveFoley&bookID="+ editBookID %>  enctype="multipart/form-data" method="post">
-  	Upload Image:<input type="file" name="img" accept=".pdf" required>
-    <button type="submit">Submit</button><br><br><br>
-  </form>
-</div>
+	genre = (String) request.getAttribute("genreToView");
+	genreBooks = (List<Book>) session.getAttribute(genre);
+%>
+
+	<div style="padding-left: 16px">
+		<h3><%= genre %></h3>
+		<%
+		
+			for (Book b: genreBooks) {
+				%>
+				<form action=<%=request.getContextPath() + "/jsp/item.jsp"%>>
+		<input type="hidden" name="genre" value=<%= genre%>>
+		 <input type="hidden" name="index" value=<%=i++%>>
+			<button type="submit">
+			<img
+				src=<%=request.getContextPath() + "/img/" + Integer.toString(b.getBookID()) + ".png"%>
+				style="width: 300px; height: 400px;">
+
+			<%=b.getTitle() + "   " + b.getCurrentPrice()%>
+		</button>
+		
+
+	</form>
+	<br> 
+				<%
+			}
+		
+		
+		%>
+	</div>
 
 </body>
-</html>
-</header>
+		</html>
+	</header>
 </body>
 </html>

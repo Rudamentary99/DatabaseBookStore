@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="model.User, model.Book, model.BookDao, java.util.List"%>
+<%@page
+	import="model.User, model.UserDao, model.Address, java.util.ArrayList"%>
 <!doctype html>
 
 <html lang="en">
@@ -23,10 +24,12 @@
 		<html>
 <body>
 
+
+
 	<div class="topnav">
 		<a class="active"
 			href=<%=request.getContextPath() + "/jsp/index.jsp"%>>Home</a> <a
-			href="shop.jsp">Shop</a>
+			href=<%=request.getContextPath() + "/BookServlet?action=shopByCategory"%>>Shop</a>
 		<%!String mStyle;
 	String mMessage;
 
@@ -66,69 +69,43 @@
 				<input type="text" placeholder="Search.." name="search">
 				<button type="submit">
 					<i class="fa fa-search"></i>
-
 				</button>
-
 			</form>
 		</div>
 	</div>
+	<%!ArrayList<Address> as;%>
+	<h3>Please select the following</h3>
 
-	<%!List<Book> books;
-	int i = 0;
-	String deleteBookMessage;%>
-
-	<%
-		deleteBookMessage = (String) request.getAttribute("deleteMessage");
-		if (deleteBookMessage != null) {
-	%>
-	<h4><%=deleteBookMessage%></h4>
-	<%
-		}
-		
-		books = (List<Book>) session.getAttribute("SearchItems");
-		if (books != null || books.size() > 0) {
-
-			for (Book b : books) {
-	%>
-
-
-	<form action=<%=request.getContextPath() + "/jsp/item.jsp"%>
+	<form action=<%=request.getContextPath() + "/UserServlet"%>
 		method="post">
-		<input type="hidden" name="action" value="viewItem"> <input
-			type="hidden" name="index" value=<%=i%>>
-		<button type="submit">
+		<input type="hidden" name="action" value="createInvoice">
+		<h4>ShippingAddress: </h4>
+		<%
+			as = (ArrayList<Address>) request.getAttribute("userAddresses");
+			if (as != null) {
+				if (as.size() > 0) {
+					for (Address a : as) {
+		%>
+		<input type="radio" name="shippingAddress" value=<%=a.getAddressID()%>>
+		<a>Street:<%=" " + a.getStreet()%></a><br> <a>City: <%=" " + a.getCity()%></a><br>
+		<a>State: <%=" " + a.getState()%></a><br> <a>Zip: <%=" " + a.getZip()%></a>
+		<br> <br>
+		<%
+			}
+				} else {%>
+					<a>You have no addresses saved. Please add an address before checking out.</a><br>
+		<%		}
+			}
+		%>
+					<a href=<%= request.getContextPath() + "/AddressServlet?action=shippingAddressView"%>>Add Shipping Address</a>
 
-			<%=b.getTitle() + "   " + b.getCurrentPrice()%>
-		</button>
-			<%
-				if (u != null && u.getFirstName() != null && u.isAdmin()) {
-							
-			%>
-
-			<a
-				href=<%=request.getContextPath() + "/AdminServlet?action=deleteBook&index="
-									+ Integer.toString(i)%>>Remove from inventory</a>
-
-			<%
-			i++;
-				
-							}
-						
-				
-			%>
-
+	<h4>Payment Method:</h4>
+		<%
+		
+		
+		%>
+		
 	</form>
-
-	<br>
-
-	<%
-		}
-		} else {
-	%>
-	<h3>No Data</h3>
-	<%
-		}
-	%>
 
 </body>
 		</html>

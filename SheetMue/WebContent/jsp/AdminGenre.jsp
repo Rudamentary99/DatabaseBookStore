@@ -29,7 +29,7 @@
 	<div class="topnav">
 		<a class="active"
 			href=<%=request.getContextPath() + "/jsp/index.jsp"%>>Home</a> <a
-			href="shop.html">Shop</a>
+			href="shop.jsp">Shop</a>
 		<%!String mStyle;
 	String mMessage;
 

@@ -75,9 +75,13 @@
 	
 	<%!PublisherDao pd = new PublisherDao();;
 	List<Publisher> pubs;%>
-	<h3>Genres:</h3>
+	<h3>Publishers:</h3>
 	<%
+		pubs = (List<Publisher>) session.getAttribute("Publishers");
+	if (pubs == null) {
 		pubs = pd.loadAll();
+		session.setAttribute("Publishers", pubs);		
+	}
 		if (pubs != null && pubs.size() > 0) {
 			for (Publisher p : pubs) {
 				if (request.getParameter("action") != null && request.getParameter("action").equals("editPublisher")
@@ -134,7 +138,18 @@
 	%>
 	<br>
 	<br>
-	
+	<% if (request.getAttribute("createPubMessage") != null)  {%>
+		<h4><%=  (String) request.getAttribute("createPubMessage") %></h4>
+	<%
+	}%>
+	<h3>Create New Publisher:</h3>
+	<form action=<%= request.getContextPath() + "/AdminServlet" %> method="post">
+		<input type="hidden" name="action" value="createPublisher">
+		Name: <input type="text" name="name" placeholder="McGrawHill" required ><br>
+		Email: <input type="text" name="email" placeholder="johndoe@whatever.com" required ><br>
+		Phone: <input type="text" name="phone" placeholder="1112223333" required ><br>
+		<button type="submit">Create New Publisher</button>
+	</form>
 </body>
 		</html>
 	</header>

@@ -24,7 +24,7 @@
 
 
 		<div class="topnav">
-		<a  href="index.jsp">Home</a> <a href="shop.html">Shop</a> 
+		<a  href="index.jsp">Home</a> <a href="Shop.jsp">Shop</a> 
 		<%!String mStyle;
 	String mMessage;
 	
@@ -38,7 +38,7 @@
 				
 			}
 		%>
-		<a <%=style%> href="cart.jsp">Cart</a>
+		<a <%=style%> href="Cart.jsp">Cart</a>
 		<a
 			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
 		<div class="search-container">
@@ -61,8 +61,10 @@
 		<br>
 				<a href=<%= request.getContextPath() + "/jsp/AdminPublisher.jsp" %>>Publishers</a><br><br> <a
 				href=<%= request.getContextPath() + "/jsp/AdminGenre.jsp" %>>Genres</a><br><br>
+			<a href=<%= request.getContextPath() + "/jsp/addItem.jsp" %>>Add New Book</a><br><br>
 				<a href=<%= request.getContextPath() + "/AdminServlet?action=viewAdmins" %>>Administrators</a> <br><br>
-				
+		
+			
 
 		</div>
 

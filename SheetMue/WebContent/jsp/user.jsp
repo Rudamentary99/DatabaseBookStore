@@ -24,7 +24,7 @@
 
 
 		<div class="topnav">
-		<a  href="index.jsp">Home</a> <a href="shop.html">Shop</a> 
+		<a  href="index.jsp">Home</a> <a href="shop.jsp">Shop</a> 
 		<%!String mStyle;
 	String mMessage;
 	
@@ -100,9 +100,10 @@
 				</form>	
 				<%} %><br><br>
 				
-				<a href="../AddressServlet?action=shippingAddressView">Shipping addresses</a><br> <a
-				href="../UserServlet?action=ccView">credit cards</a><br>
+				<a href=<%= request.getContextPath() + "/AddressServlet?action=shippingAddressView"%>>Shipping addresses</a><br> <a
+				href=<%= request.getContextPath() + "/UserServlet?action=viewCards" %>iew">credit cards</a><br>
 				<a href="NewPassword.jsp">change Password</a> <br><br>
+				<a herf=<%= request.getContextPath() + "/UserServlet?action=logout" %>>logout</a>
 				<form action=></form>
 
 		</div>

@@ -27,7 +27,7 @@
 
 	<div class="topnav">
 		<a href=<%=request.getContextPath() + "/jsp/index.jsp"%>>Home</a> <a
-			class="active" href="shop.html">Shop</a>
+			class="active" href="shop.jsp">Shop</a>
 		<%!String mStyle;
 	String mMessage;
 
@@ -65,42 +65,48 @@
 	<br>
 	<%!List<String> genres;
 	List<Book> books;
+		List<List<Book>> booksByGenre;
 	Book b;
-	BookDao bd = new BookDao();%>
+	int n; 
+	int i;%>
 	<%
-		genres = bd.loadAllGenres();
-		if (genres != null) {
-			for (String genre : genres) {
-				books = bd.loadBooksByGenre(genre);
-				if (books != null) {
+		n=0;
+		i=0;
+		genres = (List<String>) session.getAttribute("Genres");
+		booksByGenre = (List<List<Book>>) session.getAttribute("BooksByGenre");
+	
+		if (booksByGenre != null) {
+			for (List<Book> genreBooks : booksByGenre) {
+				 %>
+				 <h3><%= genres.get(i) %></h3> <a href=<%= request.getContextPath() +
+				 "/BookServlet?action=viewAllGenre&i=" + i + "&genre=" +genres.get(i++) %>>View All</a>
+				 <%
+				 n = 0; 
+				for (Book b : genreBooks) {
+					
 	%>
-	<h3><%=genre%></h3> <font action=<%=request.getContextPath() + "/BookServlet" %> method="post">
-	<input type="hidden" name="action" value="shopByCategory">
-	<input type="hidden" name="genre" value=<%= "\"" + genre + "\"" %>>
-	<button type="submit">View More</button>
-	</font>
-	<%
-		for (int i =0; i<3; i++) {
-			b = books.get(i);	
-	%>
+	<form action=<%=request.getContextPath() + "/jsp/item.jsp"%>
+		method="post">
+		<input type="hidden" value="action" value="viewItemShop"> <input
+			type="hidden" name="index" value=<%=n++%>>
+			<input
+			type="hidden" name="i" value=<%=i - 1%>>
+		<button type="submit">
+			<img
+				src=<%=request.getContextPath() + "/img/" + Integer.toString(b.getBookID()) + ".png"%>
+				style="width: 300px; height: 400px;">
 
-	<form action=<%= request.getContextPath() + "/jsp/item.jsp" %> method="post">
-		<input type="hidden" value="action" value="viewItem"> <input
-			type="hidden" name="id" value=<%="\"" + b.getBookID() + "\""%>>
-		<input type="hidden" name="title"
-			value=<%="\"" + b.getTitle() + "\""%>> <input type="hidden"
-			name="description" value=<%="\"" + b.getDescription() + "\""%>>
-		<input type="hidden" name="price"
-			value=<%="\"" + b.getCurrentPrice() + "\""%>> <input
-			type="hidden" name="stockAmount"
-			value=<%="\"" + b.getAmountInStock() + "\""%>>
-		<button type="submit"><%=b.getTitle() + "   " + b.getCurrentPrice()%></button>
+			<%=b.getTitle() + "   " + b.getCurrentPrice()%>
+		</button>
+		
 
 	</form>
-	<br> <br>
+	<br> 
 
 
 	<%
+		}
+				 out.print("<br>");
 		}
 				}
 	%>
@@ -108,12 +114,7 @@
 
 
 
-	<br>
-	<br>
-	<%
-		}
-		}
-	%>
+
 
 </body>
 		</html>

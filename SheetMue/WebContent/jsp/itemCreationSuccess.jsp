@@ -23,9 +23,9 @@
 
 
   <div class="topnav">
-    <a href="index.html">Home</a>
-    <a href="shop.html">Shop</a>
-    <a href="cart.html">Cart</a>
+    <a href="index.jsp">Home</a>
+    <a href="shop.jsp">Shop</a>
+    <a href="cart.jsp">Cart</a>
     <a href="about.html">About</a>
     <a href="contact.html">Contact</a>
 

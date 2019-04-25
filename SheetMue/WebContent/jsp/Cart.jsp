@@ -26,7 +26,7 @@
 	
 
 	<div class="topnav">
-		<a class="active" href=<%= request.getContextPath() + "/jsp/index.jsp" %>>Home</a> <a href="shop.html">Shop</a> 
+		<a href=<%= request.getContextPath() + "/jsp/index.jsp" %>>Home</a> <a href="Shop.jsp">Shop</a> 
 		<%!String mStyle;
 	String mMessage;
 	
@@ -40,7 +40,7 @@
 				
 			}
 		%>
-		<a <%=style%> href=<%= request.getContextPath() + "/CartServlet?action=viewCart" %>>Cart</a>
+		<a <%=style%> class="active" href=<%= request.getContextPath() + "/CartServlet?action=viewCart" %>>Cart</a>
 		<a
 			href="../HTML/about.html">About</a> <a href="contact.html">Contact</a>
 		<div class="search-container">
@@ -79,7 +79,8 @@
 
 
 		<div style="padding-left: 16px">
-			<form action="">
+			<form action=<%= request.getContextPath() + "/UserServlet" %> method="post">
+				<input type="hidden" name="action" value="checkout">
 				<button type="submit">Proceed to Checkout</button>
 			</form>
 			<h3>Cart Items:</h3>
